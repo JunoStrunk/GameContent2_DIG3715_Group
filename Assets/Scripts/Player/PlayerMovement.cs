@@ -11,9 +11,9 @@ public class PlayerMovement : MonoBehaviour
     // Private Variables =============
 
     PlayerControls inputControls;
-    float dir = 0f;
+    Vector3 dir;
 
-    Rigidbody2D _rb;
+    Rigidbody rb;
 
     private void Awake()
     {
@@ -40,17 +40,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move(InputAction.CallbackContext context)
     {
-        context.ReadValue<float>();
-        context.ReadValueAsButton();
-        dir = context.ReadValue<float>();
+        dir = context.ReadValue<Vector3>();
     }
 
     private void Start()
     {
-        _rb = this.GetComponent<Rigidbody2D>();
+        rb = this.GetComponent<Rigidbody>();
     }
     private void FixedUpdate()
     {
-        _rb.velocity = new Vector2(dir * speed, _rb.velocity.y);
+        rb.velocity = dir * speed;
     }
 }

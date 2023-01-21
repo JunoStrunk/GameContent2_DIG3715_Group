@@ -9,11 +9,27 @@ public class ItemController : MonoBehaviour
 
      ================================== */
     // Public
-    public int id;
+    
     public SpriteRenderer highlight;
+    public bool selected = false;
+
+    // Private
+    string id;
+    SpriteRenderer sr;
+
+    private void Update()
+    {
+        if(selected && Input.GetKeyDown(KeyCode.E))
+        {
+            GameEventSys.current.ItemPickUp(id, sr.sprite);
+            Destroy(this.gameObject);
+        }
+    }
 
     private void Start() //Important to listen only on start or else there will be a null reference for singleton
     {
+        id = this.name;
+        sr = this.GetComponent<SpriteRenderer>();
         GameEventSys.current.onItemTriggerEnter += OnHighlightItem;
         GameEventSys.current.onItemTriggerExit += OnUnHighlightItem;
     }
@@ -30,24 +46,30 @@ public class ItemController : MonoBehaviour
         GameEventSys.current.onItemTriggerExit -= OnUnHighlightItem;
     }
 
-    private void OnHighlightItem(int id)
+    private void OnHighlightItem(string id)
     {
-        if(id == this.id)
+        if (id == this.id)
+        {
             highlight.color = Color.white;
+            selected = true;
+        }
     }
 
-    private void OnUnHighlightItem(int id)
+    private void OnUnHighlightItem(string id)
     {
-        if(id == this.id)
+        if (id == this.id)
+        {
             highlight.color = Color.blue;
+            selected = false;
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter(Collider other)
     {
         GameEventSys.current.ItemTriggerEnter(id);
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit(Collider other)
     {
         GameEventSys.current.ItemTriggerExit(id);
     }

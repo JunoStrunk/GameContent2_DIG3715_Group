@@ -13,19 +13,27 @@ public class GameEventSys : MonoBehaviour
 		current = this;
 	}
 
-	public event Action<int> onItemTriggerEnter;
-	public void ItemTriggerEnter(int id)
+	//========================== Pick up item =======================
+	public event Action<string> onItemTriggerEnter;
+	public void ItemTriggerEnter(string id)
 	{
 		if (onItemTriggerEnter != null)
 			onItemTriggerEnter(id);
 	}
 
-	public event Action<int> onItemTriggerExit;
-	public void ItemTriggerExit(int id)
+	public event Action<string> onItemTriggerExit;
+	public void ItemTriggerExit(string id)
 	{
 		if (onItemTriggerExit != null)
 			onItemTriggerExit(id);
 	}
+
+	public event Action<string, Sprite> onItemPickUp;
+	public void ItemPickUp(string id, Sprite sprite)
+    {
+		if (onItemPickUp != null)
+			onItemPickUp(id, sprite);
+    }
 
 	private Func<List<GameObject>> onRequestListOfItems;
 	public void SetOnRequestListOfItems(Func<List<GameObject>> returnEvent)
@@ -40,4 +48,7 @@ public class GameEventSys : MonoBehaviour
 
 		return null;
 	}
+	//===============================================================
+
+
 }
