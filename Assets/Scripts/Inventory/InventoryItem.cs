@@ -7,12 +7,12 @@ public class InventoryItem : ScriptableObject
     public string itemName;
 
     [SerializeField]
-    public Sprite itemTexture;
+    public Sprite itemSprite;
 
     //Constructor
     public void SetValues(string itemName, Sprite itemTexture)
     {
         this.itemName = itemName;
-        this.itemTexture = itemTexture;
+        this.itemSprite = itemTexture;
     }
 }
