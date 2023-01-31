@@ -6,6 +6,9 @@ public class InventoryManager : MonoBehaviour
 {
     public List<InventoryItem> InventoryList = new List<InventoryItem>();
 
+    InventoryItem activeItem = null;
+    int activeItemIndex = 0;
+
     private void Start() //Important to listen only on start or else there will be a null reference for singleton
     {
         GameEventSys.current.onItemPickUp += AddItem;
@@ -19,6 +22,28 @@ public class InventoryManager : MonoBehaviour
     private void OnDestroy()
     {
         GameEventSys.current.onItemPickUp -= AddItem;
+    }
+
+    private void SetActiveItem(int index)
+    {
+        //Debug.Log("Index: " + index);
+        //Debug.Log("Count: " + InventoryList.Count);
+        if (index >= InventoryList.Count)
+            index = 0;
+        if(InventoryList.Count > 0)
+            activeItem = InventoryList[index];
+        activeItemIndex = index;
+    }
+
+    public InventoryItem GetActiveItem()
+    {
+        return activeItem;
+    }
+
+    public void CycleActiveItem()
+    {
+        activeItemIndex++;
+        SetActiveItem(activeItemIndex);
     }
 
     public void AddItem(string id, Sprite sprite)

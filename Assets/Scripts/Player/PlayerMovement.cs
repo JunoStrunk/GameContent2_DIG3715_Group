@@ -9,7 +9,6 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 0f;
 
     // Private Variables =============
-
     PlayerControls inputControls;
     Vector3 dir;
 
@@ -49,6 +48,23 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        rb.velocity = dir * speed;
+        //These variables determine if camera is in front/behind, to the left/right of the player
+        // Left, Behind - Negative
+        //float FB = Vector3.Dot(camera.transform.position - transform.position.normalized, transform.TransformDirection(Vector3.forward).normalized);
+        //float LR = Vector3.Dot(camera.transform.position - transform.position.normalized, transform.TransformDirection(Vector3.right).normalized);
+
+        //Debug.Log("FB: " + FB);
+        //Debug.Log("LR: " + LR);
+
+        Vector3 forwardRel = dir.z * Camera.main.transform.forward.normalized;
+        Vector3 rightRel = dir.x * Camera.main.transform.right.normalized;
+        forwardRel.y = 0;
+        rightRel.y = 0;
+
+        Vector3 movement = forwardRel + rightRel;
+
+        //transform.Translate(movement, Space.World);
+
+        rb.AddForce(movement * speed);
     }
 }

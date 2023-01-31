@@ -5,24 +5,36 @@ using UnityEngine;
 public class ItemController : MonoBehaviour
 {
     /* Notes ============================
-    Possible issue with two items being too close to each other
-
+     * This script should be placed on any interactables.
+     * It controls if the item is selected, or interacted with.
+     * This script tells when to add the item to the inventory
+     * and what the item's sprite and name is.
+     * 
+     * Possible issue with two items being too close to each other
      ================================== */
     // Public
     
     public SpriteRenderer highlight;
-    public bool selected = false;
+    public bool canPickUp = true;
 
     // Private
     string id;
     SpriteRenderer sr;
+    bool selected = false;
 
     private void Update()
     {
         if(selected && Input.GetKeyDown(KeyCode.E))
         {
-            GameEventSys.current.ItemPickUp(id, sr.sprite);
-            Destroy(this.gameObject);
+            if (canPickUp)
+            {
+                GameEventSys.current.ItemPickUp(id, sr.sprite);
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                GameEventSys.current.ItemInteract(id);
+            }
         }
     }
 

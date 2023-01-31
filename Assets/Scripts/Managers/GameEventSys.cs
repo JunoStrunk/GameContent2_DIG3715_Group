@@ -12,8 +12,16 @@ public class GameEventSys : MonoBehaviour
 	{
 		current = this;
 	}
+	//========================== Camera =======================
+	public event Action onCameraPosChange;
+	public void CameraPosChange()
+    {
+		if (onCameraPosChange != null)
+			onCameraPosChange();
+    }
+	//=========================================================
 
-	//========================== Pick up item =======================
+	//========================== Items ========================
 	public event Action<string> onItemTriggerEnter;
 	public void ItemTriggerEnter(string id)
 	{
@@ -35,6 +43,13 @@ public class GameEventSys : MonoBehaviour
 			onItemPickUp(id, sprite);
     }
 
+	public event Action<string> onItemInteract;
+	public void ItemInteract(string id)
+    {
+		if (onItemInteract != null)
+			onItemInteract(id);
+    }
+
 	private Func<List<GameObject>> onRequestListOfItems;
 	public void SetOnRequestListOfItems(Func<List<GameObject>> returnEvent)
 	{
@@ -48,7 +63,7 @@ public class GameEventSys : MonoBehaviour
 
 		return null;
 	}
-	//===============================================================
+	//=========================================================
 
 
 }
