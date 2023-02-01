@@ -7,11 +7,16 @@ public class CameraSwitch : MonoBehaviour
     public Camera main;
     public Transform point;
 
-    private void OnTriggerEnter(Collider other)
+   private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+     /*   if(other.CompareTag("Player"))
         {
             GameEventSys.current.CameraPosChange();
+        } */
+        if (other.CompareTag("Player"))
+        {
+            main.transform.position = point.transform.position;
         }
+  
     }
 }
