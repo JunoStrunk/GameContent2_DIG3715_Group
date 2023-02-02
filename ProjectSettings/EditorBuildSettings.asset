@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/Menu.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: cccccb6deecc4664883a0c9dd3604075
   - enabled: 1
     path: Assets/Scenes/Mark_Test_Scene.unity
