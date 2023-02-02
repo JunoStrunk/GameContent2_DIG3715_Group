@@ -22,6 +22,6 @@ public class EnemyStateChase : EnemyBaseState
     ============================================*/
     public override void UpdateState(EnemyStateManager enemy)
     {
-
+        enemy.agent.destination = enemy.target.position;
     }
 }
