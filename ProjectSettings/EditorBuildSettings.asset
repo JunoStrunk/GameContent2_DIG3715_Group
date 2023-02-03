@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: cccccb6deecc4664883a0c9dd3604075
   - enabled: 1
-    path: Assets/Scenes/Mark_Test_Scene.unity
-    guid: 3d773133063839049bab978de49294e0
+    path: Assets/Scenes/Prototype/Prototype.unity
+    guid: 7572cf4fa02cc4740a6af5e36b0435ae
   m_configObjects: {}
