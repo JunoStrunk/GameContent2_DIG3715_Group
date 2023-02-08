@@ -5,12 +5,15 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public List<InventoryItem> InventoryList = new List<InventoryItem>();
+    GameObject inventorySlots;
 
     InventoryItem activeItem = null;
     int activeItemIndex = 0;
 
     private void Start() //Important to listen only on start or else there will be a null reference for singleton
     {
+        inventorySlots = GameObject.Find("Slots");
+        
         GameEventSys.current.onItemPickUp += AddItem;
     }
 
