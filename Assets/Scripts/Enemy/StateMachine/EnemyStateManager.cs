@@ -23,9 +23,16 @@ public class EnemyStateManager : MonoBehaviour
     //Public Variables
     public List<Transform> patrolPoints = new List<Transform>();
     public NavMeshAgent agent;
+    public Transform target;
+
+    //Private Variables
+    BoxCollider sight;
 
     void Start()
     {
+        //Get Variables
+        sight = this.GetComponent<BoxCollider>();
+
         //Get agent
         agent = this.GetComponent<NavMeshAgent>();
         
@@ -54,5 +61,15 @@ public class EnemyStateManager : MonoBehaviour
     {
         currentState = state; //update current state to whatever the next state is
         currentState.EnterState(this); //Set state for gameobject
+    }
+
+    private void OnTriggerEnter(Collider col)
+    {
+        //If enemy sees player, chase
+        if(col.gameObject.tag == "Player")
+        {
+            target = col.gameObject.transform;
+            SwitchState(ChaseState);
+        }
     }
 }
