@@ -44,3 +44,6 @@ TagManager:
   - name: Gameplay
     uniqueID: 3727557165
     locked: 0
+  - name: Canvas
+    uniqueID: 8047293
+    locked: 0
