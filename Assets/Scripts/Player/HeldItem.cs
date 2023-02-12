@@ -21,7 +21,6 @@ public class HeldItem : MonoBehaviour
         {
             heldItem = inventory.GetActiveItem();
             rend.sprite = heldItem.itemSprite;
-            rend.color = heldItem.color;
         }
     }
 

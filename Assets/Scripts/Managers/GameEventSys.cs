@@ -36,11 +36,11 @@ public class GameEventSys : MonoBehaviour
 			onItemTriggerExit(id);
 	}
 
-	public event Action<string, Sprite, Color> onItemPickUp;
-	public void ItemPickUp(string id, Sprite sprite, Color color)
+	public event Action<string, Sprite> onItemPickUp;
+	public void ItemPickUp(string id, Sprite sprite)
     {
 		if (onItemPickUp != null)
-			onItemPickUp(id, sprite, color);
+			onItemPickUp(id, sprite);
     }
 
 	public event Action<string> onItemInteract;
