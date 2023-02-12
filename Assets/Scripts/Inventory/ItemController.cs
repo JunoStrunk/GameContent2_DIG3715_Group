@@ -13,13 +13,13 @@ public class ItemController : MonoBehaviour
      * Possible issue with two items being too close to each other
      ================================== */
     // Public
-    
+
     public SpriteRenderer highlight;
     public bool canPickUp = true;
 
     // Private
     string id;
-    SpriteRenderer sr;
+    SpriteRenderer rend;
     bool selected = false;
 
     private void Update()
@@ -28,7 +28,7 @@ public class ItemController : MonoBehaviour
         {
             if (canPickUp)
             {
-                GameEventSys.current.ItemPickUp(id, sr.sprite);
+                GameEventSys.current.ItemPickUp(id, rend.sprite, rend.color);
                 Destroy(this.gameObject);
             }
             else
@@ -41,7 +41,7 @@ public class ItemController : MonoBehaviour
     private void Start() //Important to listen only on start or else there will be a null reference for singleton
     {
         id = this.name;
-        sr = this.GetComponent<SpriteRenderer>();
+        rend = this.GetComponent<SpriteRenderer>();
         GameEventSys.current.onItemTriggerEnter += OnHighlightItem;
         GameEventSys.current.onItemTriggerExit += OnUnHighlightItem;
     }
@@ -71,7 +71,7 @@ public class ItemController : MonoBehaviour
     {
         if (id == this.id)
         {
-            highlight.color = Color.blue;
+            highlight.color = rend.color;
             selected = false;
         }
     }

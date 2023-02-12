@@ -16,7 +16,6 @@ public class SwitchCamera : MonoBehaviour
         if(col.CompareTag("Player"))
         {
             Camera.main.transform.SetPositionAndRotation(target.transform.position, target.transform.rotation);
-            col.transform.rotation = Quaternion.Euler(0, target.transform.rotation.y, 0);
         }
     }
 }
