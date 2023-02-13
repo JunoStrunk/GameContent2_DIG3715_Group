@@ -9,10 +9,14 @@ public class InventoryItem : ScriptableObject
     [SerializeField]
     public Sprite itemSprite;
 
+    [SerializeField]
+    public Color color;
+
     //Constructor
-    public void SetValues(string itemName, Sprite itemTexture)
+    public void SetValues(string itemName, Sprite itemTexture, Color color)
     {
         this.itemName = itemName;
         this.itemSprite = itemTexture;
+        this.color = color;
     }
 }
