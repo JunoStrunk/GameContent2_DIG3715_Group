@@ -11,8 +11,10 @@ public class PlayerMovement : MonoBehaviour
     // Private Variables =============
     PlayerControls inputControls;
     Vector3 dir;
+    Vector3 rot;
 
     Rigidbody rb;
+    int groundLayer = 1 << 3;
 
     private void Awake()
     {
@@ -66,5 +68,8 @@ public class PlayerMovement : MonoBehaviour
         //transform.Translate(movement, Space.World);
 
         rb.AddForce(movement * speed);
+
+        rot = new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z);
+        transform.LookAt(rot, -Vector3.up);
     }
 }
