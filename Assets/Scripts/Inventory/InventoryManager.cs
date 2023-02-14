@@ -1,16 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
+    public int InventoryLimit = 5;
     public List<InventoryItem> InventoryList = new List<InventoryItem>();
+    
+    [SerializeField]
+    GameObject InventorySlot;
 
+    //Private variables
+    List<Image> inventorySlots = new List<Image>();
+    HorizontalLayoutGroup inventoryLayout;
     InventoryItem activeItem = null;
     int activeItemIndex = 0;
 
     private void Start() //Important to listen only on start or else there will be a null reference for singleton
     {
+        inventoryLayout = GameObject.Find("Slots").GetComponent<HorizontalLayoutGroup>();
+        
+        for(int invSetupIter = 0; invSetupIter < InventoryLimit; invSetupIter++)
+        {
+            GameObject newSlot = Instantiate(InventorySlot, transform.position, transform.rotation);
+            newSlot.transform.SetParent(inventoryLayout.transform);
+            Image newItemSlot = newSlot.transform.GetChild(0).GetComponent<Image>(); //Child will always be index 0, only one child.
+            inventorySlots.Add(newItemSlot);
+        }
         GameEventSys.current.onItemPickUp += AddItem;
     }
 
@@ -46,12 +63,28 @@ public class InventoryManager : MonoBehaviour
         SetActiveItem(activeItemIndex);
     }
 
-    public void AddItem(string id, Sprite sprite)
+    public void AddItem(string id, Sprite sprite, Color color)
     {
-        InventoryItem newItem = ScriptableObject.CreateInstance<InventoryItem>();
-        newItem.SetValues(id, sprite);
-        InventoryList.Add(newItem);
-        Debug.Log("Added item: " + newItem.itemName + ", Inventory Count: " + InventoryList.Count);
+        if(!(InventoryList.Count >= InventoryLimit))
+        {
+            //Create and add item to inventory
+            InventoryItem newItem = ScriptableObject.CreateInstance<InventoryItem>();
+            newItem.SetValues(id, sprite, color);
+            InventoryList.Add(newItem);
+            Debug.Log("Added item: " + newItem.itemName + ", Inventory Count: " + InventoryList.Count);
+
+            //Cycle through current inventory to find next slot
+            for(int invSlotCheck = 0; invSlotCheck < inventorySlots.Count; invSlotCheck++)
+            {
+                //show sprite in inventory
+                if(inventorySlots[invSlotCheck].sprite == null)
+                {
+                    inventorySlots[invSlotCheck].sprite = sprite;
+                    inventorySlots[invSlotCheck].color = color;
+                    break;
+                }
+            }
+        }
     }
 
     public bool RemoveItem(InventoryItem itemToRemove)

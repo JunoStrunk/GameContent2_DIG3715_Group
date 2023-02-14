@@ -28,7 +28,7 @@ public class ItemController : MonoBehaviour
         {
             if (canPickUp)
             {
-                GameEventSys.current.ItemPickUp(id, sr.sprite);
+                GameEventSys.current.ItemPickUp(id, sr.sprite, sr.color);
                 Destroy(this.gameObject);
             }
             else
@@ -71,7 +71,7 @@ public class ItemController : MonoBehaviour
     {
         if (id == this.id)
         {
-            highlight.color = Color.blue;
+            highlight.color = sr.color;
             selected = false;
         }
     }
