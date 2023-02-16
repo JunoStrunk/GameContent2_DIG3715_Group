@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
 
             if(cols.Length < 1) //If there is no ground in contact with player
             {
-                Debug.Log("Left the ground");
+                // Debug.Log("Left the ground");
                 Ray groundCheckRay = new Ray(transform.position, Vector3.down);
                 RaycastHit groundHitInfo;
 

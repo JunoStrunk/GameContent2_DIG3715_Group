@@ -9,6 +9,13 @@ public class EnemyStateChase : EnemyBaseState
     *   - What will stop this   : The enemy can no longer see the player
     *===========================================*/
 
+    //Public Variables
+    Ray sightLine;
+    RaycastHit sightHit;
+
+    //Private Variables
+    int obstacleLayer =  1 << 6;
+
     /* Enter State =============================
     *   - When the state is entered, what happens?
     ============================================*/
@@ -22,6 +29,19 @@ public class EnemyStateChase : EnemyBaseState
     ============================================*/
     public override void UpdateState(EnemyStateManager enemy)
     {
-        enemy.agent.destination = enemy.target.position;
+        if(!enemy.isPlayerHidden) //if player is visible
+        {
+            enemy.agent.destination = enemy.target.position;
+            Debug.DrawLine(enemy.transform.position, enemy.target.position, Color.yellow);
+            if(Physics.Linecast(enemy.transform.position, enemy.target.position, out sightHit, obstacleLayer)) //If can't see the player
+            {
+                enemy.isPlayerHidden = true; //then the player is hidden
+            }
+        }
+        else
+        {
+            enemy.agent.destination = sightHit.point; //go to last place seen
+        }
+
     }
 }

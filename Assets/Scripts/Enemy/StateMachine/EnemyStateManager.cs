@@ -24,12 +24,15 @@ public class EnemyStateManager : MonoBehaviour
     public List<Transform> patrolPoints = new List<Transform>();
     public NavMeshAgent agent;
     public Transform target;
+    public bool isPlayerHidden = false;
 
     //Private Variables
     BoxCollider sight;
 
     void Start()
     {
+        GameEventSys.current.onPlayerHides += playerHidden;
+
         //Get Variables
         sight = this.GetComponent<BoxCollider>();
 
@@ -63,10 +66,15 @@ public class EnemyStateManager : MonoBehaviour
         currentState.EnterState(this); //Set state for gameobject
     }
 
+    public void playerHidden()
+    {
+        isPlayerHidden = !isPlayerHidden;
+    }
+
     private void OnTriggerEnter(Collider col)
     {
         //If enemy sees player, chase
-        if(col.gameObject.tag == "Player")
+        if(col.gameObject.CompareTag("Player") && !isPlayerHidden) //if what enters the collider is the player AND the player is not hidden
         {
             target = col.gameObject.transform;
             SwitchState(ChaseState);

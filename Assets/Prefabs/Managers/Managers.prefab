@@ -58,7 +58,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc7e4acf8683f0941871f1fe35a2c5dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InventoryLimit: 5
   InventoryList: []
+  InventorySlot: {fileID: 5804918310059940126, guid: dad2c908ec913fd42858db39fab6f35e, type: 3}
 --- !u!114 &4226219863844059936
 MonoBehaviour:
   m_ObjectHideFlags: 0

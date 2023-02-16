@@ -12,6 +12,16 @@ public class GameEventSys : MonoBehaviour
 	{
 		current = this;
 	}
+
+	//========================== Player =======================
+	public event Action onPlayerHides;
+	public void PlayerHides()
+    {
+		if (onPlayerHides != null)
+			onPlayerHides();
+    }
+	//=============================-----=======================
+
 	//========================== Camera =======================
 	public event Action onCameraPosChange;
 	public void CameraPosChange()
@@ -48,6 +58,13 @@ public class GameEventSys : MonoBehaviour
     {
 		if (onItemInteract != null)
 			onItemInteract(id);
+    }
+
+	public event Action<string> onItemDrop;
+	public void ItemDrop(string id)
+    {
+		if (onItemDrop != null)
+			onItemDrop(id);
     }
 
 	private Func<List<GameObject>> onRequestListOfItems;

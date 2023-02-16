@@ -32,7 +32,7 @@ public class EnemyStatePatrol : EnemyBaseState
         enemy.agent.destination = targetPoint.position;
 
         //Once at at target point...
-        if(Vector3.Distance(enemy.agent.transform.position, targetPoint.position) < 0.01)
+        if(Vector3.Distance(enemy.agent.transform.position, targetPoint.position) < 0.1)
         {
             //Select next target point
             patrolPointIter++;
@@ -40,6 +40,7 @@ public class EnemyStatePatrol : EnemyBaseState
                 patrolPointIter = 0;
             
             targetPoint = enemy.patrolPoints[patrolPointIter];
+            enemy.transform.LookAt(targetPoint.position);
         }
         
     }
