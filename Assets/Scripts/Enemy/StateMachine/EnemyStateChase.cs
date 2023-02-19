@@ -19,7 +19,8 @@ public class EnemyStateChase : EnemyBaseState
     ============================================*/
     public override void EnterState(EnemyStateManager enemy)
     {
-
+        // Debug.Log("Chasing");
+        canSeePlayer = true;
     }
 
     /* Update State =============================
@@ -48,7 +49,7 @@ public class EnemyStateChase : EnemyBaseState
             }
             else
             {
-                Debug.Log(Vector3.Distance(enemy.agent.transform.position, lastSeenPos));
+                // Debug.Log(Vector3.Distance(enemy.agent.transform.position, lastSeenPos));
                 enemy.agent.destination = lastSeenPos;
             }
         }

@@ -198,3 +198,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlight: {fileID: 8686914224089121049}
   canPickUp: 0
+  isEvidence: 0

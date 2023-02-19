@@ -18,6 +18,7 @@ public class EnemyStatePatrol : EnemyBaseState
     ============================================*/
     public override void EnterState(EnemyStateManager enemy)
     {
+        // Debug.Log("Patrolling");
         patrolPointIter = 1;
         targetPoint = enemy.patrolPoints[patrolPointIter]; //set First target point to the next patrol point in the list
         //The enemy will always start out at the first point in the list. 

@@ -22,6 +22,7 @@ public class EnemyStateSearching : EnemyBaseState
     ============================================*/
     public override void EnterState(EnemyStateManager enemy)
     {
+        // Debug.Log("Searching");
         // for(searchIter = 0; searchIter < searchIterBound; searchIter++)
         // {
         //     randDirection = Random.insideUnitSphere * enemy.searchRadius; //pick a random spot in range

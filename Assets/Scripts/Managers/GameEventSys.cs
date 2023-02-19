@@ -22,6 +22,34 @@ public class GameEventSys : MonoBehaviour
     }
 	//=============================-----=======================
 
+	//======================== Detective ======================
+	public event Action onFoundEvidence;
+	public void FoundEvidence()
+    {
+		if (onFoundEvidence != null)
+			onFoundEvidence();
+    }
+
+	//=========================================================
+
+	//======================= Game State ======================
+
+	public event Action onGameWon;
+	public void GameWon()
+    {
+		if (onGameWon != null)
+			onGameWon();
+    }
+
+	public event Action onGameLost;
+	public void GameLost()
+    {
+		if (onGameLost != null)
+			onGameLost();
+    }
+
+	//=========================================================
+
 	//========================== Camera =======================
 	public event Action onCameraPosChange;
 	public void CameraPosChange()

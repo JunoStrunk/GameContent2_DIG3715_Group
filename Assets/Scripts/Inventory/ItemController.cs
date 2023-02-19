@@ -42,6 +42,7 @@ public class ItemController : MonoBehaviour
     {
         id = this.name;
         sr = this.GetComponent<SpriteRenderer>();
+
         GameEventSys.current.onItemTriggerEnter += OnHighlightItem;
         GameEventSys.current.onItemTriggerExit += OnUnHighlightItem;
     }
