@@ -9,12 +9,10 @@ public class EnemyStateChase : EnemyBaseState
     *   - What will stop this   : The enemy can no longer see the player
     *===========================================*/
 
-    //Public Variables
-    Ray sightLine;
     RaycastHit sightHit;
-
-    //Private Variables
+    Vector3 lastSeenPos;
     int obstacleLayer =  1 << 6;
+    bool canSeePlayer = true; //canSeePlayer must be separate from isPlayerHidden, because then chase state will never end
 
     /* Enter State =============================
     *   - When the state is entered, what happens?
@@ -29,18 +27,30 @@ public class EnemyStateChase : EnemyBaseState
     ============================================*/
     public override void UpdateState(EnemyStateManager enemy)
     {
-        if(!enemy.isPlayerHidden) //if player is visible
+        if(canSeePlayer) //if player is visible
         {
             enemy.agent.destination = enemy.target.position;
             Debug.DrawLine(enemy.transform.position, enemy.target.position, Color.yellow);
             if(Physics.Linecast(enemy.transform.position, enemy.target.position, out sightHit, obstacleLayer)) //If can't see the player
             {
-                enemy.isPlayerHidden = true; //then the player is hidden
+                canSeePlayer = false; //then the player is hidden
+                // enemy.positionQ.Enqueue(sightHit.point);
+                lastSeenPos = enemy.NearestOnNavmesh(sightHit.point);
+                enemy.agent.destination = lastSeenPos;
             }
         }
         else
         {
-            enemy.agent.destination = sightHit.point; //go to last place seen
+            if(Vector3.Distance(enemy.agent.transform.position, lastSeenPos) - 1f < 0.1f)
+            {
+                
+                enemy.SwitchState(enemy.SearchingState);
+            }
+            else
+            {
+                Debug.Log(Vector3.Distance(enemy.agent.transform.position, lastSeenPos));
+                enemy.agent.destination = lastSeenPos;
+            }
         }
 
     }

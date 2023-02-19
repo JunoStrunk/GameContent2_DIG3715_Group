@@ -21,10 +21,11 @@ public class EnemyStateManager : MonoBehaviour
     public EnemyStateIncapacitated IncapacitatedState = new EnemyStateIncapacitated();
 
     //Public Variables
+    public float searchRadius = 5f;
+    public bool isPlayerHidden = false; 
     public List<Transform> patrolPoints = new List<Transform>();
     public NavMeshAgent agent;
     public Transform target;
-    public bool isPlayerHidden = false;
 
     //Private Variables
     BoxCollider sight;
@@ -51,9 +52,24 @@ public class EnemyStateManager : MonoBehaviour
         currentState.EnterState(this); //Make specific enemy enter the current state
     }
 
+    void OnDisable()
+    {
+        GameEventSys.current.onPlayerHides -= playerHidden;
+    }
+
+    void OnDestroy()
+    {
+        GameEventSys.current.onPlayerHides -= playerHidden;
+    }
+
     void Update()
     {
         currentState.UpdateState(this); //Make specific enemy update state each frame
+        // if(positionQ.Count > 0)
+        // {
+        //     Debug.Log(positionQ.Peek());
+        //     agent.destination = positionQ.Dequeue();
+        // }
     }
     
     /* SwitchState ====================================
@@ -66,9 +82,9 @@ public class EnemyStateManager : MonoBehaviour
         currentState.EnterState(this); //Set state for gameobject
     }
 
-    public void playerHidden()
+    public void playerHidden(bool state)
     {
-        isPlayerHidden = !isPlayerHidden;
+        isPlayerHidden = state;
     }
 
     private void OnTriggerEnter(Collider col)
@@ -76,8 +92,26 @@ public class EnemyStateManager : MonoBehaviour
         //If enemy sees player, chase
         if(col.gameObject.CompareTag("Player") && !isPlayerHidden) //if what enters the collider is the player AND the player is not hidden
         {
-            target = col.gameObject.transform;
-            SwitchState(ChaseState);
+            SawPlayer(col.gameObject.transform);
         }
+    }
+
+    public void SawPlayer(Transform player)
+    {
+            target = player;
+            SwitchState(ChaseState);
+    }
+
+    public Vector3 NearestOnNavmesh(Vector3 spot)
+    {
+        NavMeshHit nearestSpot;
+        NavMesh.SamplePosition(spot, out nearestSpot, searchRadius, 1);
+        return nearestSpot.position;
+    }
+
+    public IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(5f);
+        StopCoroutine(Delay());
     }
 }

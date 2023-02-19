@@ -14,11 +14,11 @@ public class GameEventSys : MonoBehaviour
 	}
 
 	//========================== Player =======================
-	public event Action onPlayerHides;
-	public void PlayerHides()
+	public event Action<bool> onPlayerHides;
+	public void PlayerHides(bool state)
     {
 		if (onPlayerHides != null)
-			onPlayerHides();
+			onPlayerHides(state);
     }
 	//=============================-----=======================
 
