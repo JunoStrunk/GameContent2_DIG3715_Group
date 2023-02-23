@@ -23,13 +23,27 @@ public class HeldItem : MonoBehaviour
             rend.sprite = heldItem.itemSprite;
             rend.color = heldItem.color;
         }
+        else
+        {
+            heldItem = null;
+            rend.sprite = null;
+        }
     }
 
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            SetActiveItem();
+        }
         if(Input.GetKeyDown(KeyCode.Tab))
         {
             inventory.CycleActiveItem();
+            SetActiveItem();
+        }
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            inventory.DropActiveItem();
             SetActiveItem();
         }
     }

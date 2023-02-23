@@ -12,6 +12,7 @@ public class InventoryManager : MonoBehaviour
     GameObject InventorySlot;
 
     //Private variables
+    // List<Image> inventorySlots = new List<Image>();
     List<Image> inventorySlots = new List<Image>();
     HorizontalLayoutGroup inventoryLayout;
     InventoryItem activeItem = null;
@@ -59,8 +60,40 @@ public class InventoryManager : MonoBehaviour
 
     public void CycleActiveItem()
     {
+        // Debug.Log(activeItemIndex);
         activeItemIndex++;
         SetActiveItem(activeItemIndex);
+    }
+
+    public void DropActiveItem()
+    {
+        RemoveItem(activeItem);
+        activeItem = null;
+        CycleActiveItem();
+        UpdateInventory();
+    }
+
+    public void UpdateInventory()
+    {
+        for(int invIter = 0; invIter < InventoryLimit; invIter++)
+        {
+            //go through slots
+            if(inventorySlots[invIter].sprite != null) //if there is an item in it,
+            {
+                if(invIter < InventoryList.Count)//check if the slots index is within InventoryLists range
+                {
+                    //if it is set it to the correct sprite and color
+                    inventorySlots[invIter].sprite = InventoryList[invIter].itemSprite;
+                    inventorySlots[invIter].color = InventoryList[invIter].color;
+                }
+                else
+                {
+                    //if it is not clear it
+                    inventorySlots[invIter].sprite = null;
+                    inventorySlots[invIter].color = Color.clear;
+                }
+            }
+        }
     }
 
     public void AddItem(string id, Sprite sprite, Color color)
@@ -71,10 +104,10 @@ public class InventoryManager : MonoBehaviour
             InventoryItem newItem = ScriptableObject.CreateInstance<InventoryItem>();
             newItem.SetValues(id, sprite, color);
             InventoryList.Add(newItem);
-            Debug.Log("Added item: " + newItem.itemName + ", Inventory Count: " + InventoryList.Count);
+            // Debug.Log("Added item: " + newItem.itemName + ", Inventory Count: " + InventoryList.Count);
 
             //Cycle through current inventory to find next slot
-            for(int invSlotCheck = 0; invSlotCheck < inventorySlots.Count; invSlotCheck++)
+            for(int invSlotCheck = 0; invSlotCheck < InventoryLimit; invSlotCheck++)
             {
                 //show sprite in inventory
                 if(inventorySlots[invSlotCheck].sprite == null)
@@ -83,6 +116,11 @@ public class InventoryManager : MonoBehaviour
                     inventorySlots[invSlotCheck].color = color;
                     break;
                 }
+            }
+
+            if(InventoryList.Count == 1) //if this is the first item
+            {
+                SetActiveItem(0);
             }
         }
     }

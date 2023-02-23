@@ -66,7 +66,7 @@ public class EventRules : MonoBehaviour
 
     private void TestItem()
     {
-        if (inventory.GetActiveItem().itemName == "Item")
+        if (inventory.GetActiveItem() != null && inventory.GetActiveItem().itemName == "Item")
             Debug.Log("Event Occurs!");
     }
 }
