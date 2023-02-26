@@ -7,6 +7,9 @@ public class PauseScript : MonoBehaviour
 {
     public static bool GameIsPaused = false;
     public GameObject pauseMenuUI;
+    public GameObject controlsUI;
+    public static bool bannerExit = false;
+    public static bool controlsExit = false;
 
     // Update is called once per frame
     void Update()
@@ -14,8 +17,8 @@ public class PauseScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (GameIsPaused)
-            {
-                Resume();
+            {              
+                StartCoroutine(resumeGame());
             } 
             else
             {
@@ -23,16 +26,50 @@ public class PauseScript : MonoBehaviour
             }
         }
     }
-    public void Resume ()
+    public void buttonResume ()
     {
-        pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
-        GameIsPaused = false;
+        StartCoroutine(resumeGame());
     }
+    
     void Pause()
     {
-        pauseMenuUI.SetActive(true);
+        pauseMenuUI.SetActive(true);        
         Time.timeScale = 0f;
         GameIsPaused = true;
-    }       
+    }
+
+    public void openControls()
+    {
+        StartCoroutine(removePauseMenu());
+        controlsUI.SetActive(true);
+    }
+    public void closeControls()
+    {
+        pauseMenuUI.SetActive(true);
+        StartCoroutine(removeControls());
+    }
+    IEnumerator resumeGame()
+    {
+        bannerExit = true; 
+        yield return new WaitForSecondsRealtime(.5f);
+        Time.timeScale = 1f;
+        pauseMenuUI.SetActive(false);
+        GameIsPaused = false;
+        bannerExit = false;
+    }
+    IEnumerator removePauseMenu()
+    {
+        bannerExit = true;
+        yield return new WaitForSecondsRealtime(.5f);        
+        pauseMenuUI.SetActive(false);
+        bannerExit = false;
+    } 
+    IEnumerator removeControls()
+    {
+        controlsExit = true;
+        yield return new WaitForSecondsRealtime(.5f);        
+        controlsUI.SetActive(false);
+        controlsExit = false;
+    } 
+
 }

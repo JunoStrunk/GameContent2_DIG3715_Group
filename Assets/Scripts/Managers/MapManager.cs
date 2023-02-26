@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    public GameObject mapCanvas;
+    public GameObject mapUI;
     public GameObject floor1;
     public GameObject floor2;
-    public bool mapOn = false;
-    public int floorNum = 1;
+    public static bool mapExit = false;
+
+    public GameObject Map_closed_BTN;
+    public GameObject Map_opened_BTN;
+
+    [HideInInspector] public bool mapOn = false;
+    //public int floorNum = 1;
 
     void Update()
     {
@@ -51,12 +56,46 @@ public class MapManager : MonoBehaviour
     }
     void turnOn()
     {
-        mapCanvas.SetActive(true);
+        mapUI.SetActive(true);
         mapOn = true;
     }
     void turnOff()
     {
-        mapCanvas.SetActive(false);
+        StartCoroutine(removeMap());
         mapOn = false;
     }
+    public void openMap()
+    {
+        if (mapOn == false)
+        {
+            turnOn();
+            Map_closed_BTN.SetActive(false);
+            Map_opened_BTN.SetActive(true);
+        }
+        else if (mapOn == true)
+        {
+            turnOff();
+            Map_closed_BTN.SetActive(true);
+            Map_opened_BTN.SetActive(false);
+        }
+    }
+    public void mapUp()
+    {
+        floor1.SetActive(false);
+        floor2.SetActive(true);            
+        
+    }
+    public void mapDown()
+    {
+        floor1.SetActive(true);
+        floor2.SetActive(false);        
+    }
+    IEnumerator removeMap()
+    {
+        mapExit = true;
+        yield return new WaitForSecondsRealtime(.5f);
+        mapUI.SetActive(false);
+        mapExit = false;
+    }
 }
+
