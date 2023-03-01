@@ -47,3 +47,9 @@ TagManager:
   - name: Canvas
     uniqueID: 8047293
     locked: 0
+  - name: Words
+    uniqueID: 3371405311
+    locked: 0
+  - name: Caution
+    uniqueID: 1483674615
+    locked: 0
