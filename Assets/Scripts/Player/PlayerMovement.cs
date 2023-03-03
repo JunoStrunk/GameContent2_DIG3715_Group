@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     SphereCollider groundCol;
     //Transform pivot;
     int groundLayer = 1 << 3;
-    bool isGrounded = true;
+    // bool isGrounded = true;
 
     private void Awake()
     {
@@ -74,22 +74,9 @@ public class PlayerMovement : MonoBehaviour
 
         rb.AddForce(movement * speed);
 
-        rot = Camera.main.transform.position - transform.position;
+        rot = Camera.main.transform.position-transform.position;
         rot.y = 0;
         transform.rotation = Quaternion.LookRotation(rot);
-
-        //isGrounded
-        if(!isGrounded)
-        {
-            // Ray groundCheckRay = new Ray(transform.position, Vector3.down);
-            // RaycastHit groundHitInfo;
-
-            // if(Physics.Raycast(groundCheckRay, out groundHitInfo, Mathf.Infinity, groundLayer))
-            // {
-            //     transform.position = new Vector3(transform.position.x, groundHitInfo.point.y+1f, transform.position.z);
-            //     isGrounded = true;
-            // }
-        }
     }
 
     void OnTriggerExit(Collider col)

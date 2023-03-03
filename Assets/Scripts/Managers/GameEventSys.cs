@@ -8,7 +8,7 @@ public class GameEventSys : MonoBehaviour
 	//Create singleton for event system :)
 	public static GameEventSys current;
 
-	private void Awake()
+	private void OnEnable()
 	{
 		current = this;
 	}
@@ -33,6 +33,12 @@ public class GameEventSys : MonoBehaviour
 	//=========================================================
 
 	//======================= Game State ======================
+	public event Action onTimerEnded;
+	public void TimerEnded()
+    {
+		if (onTimerEnded != null)
+			onTimerEnded();
+    }
 
 	public event Action onGameWon;
 	public void GameWon()
@@ -74,11 +80,11 @@ public class GameEventSys : MonoBehaviour
 			onItemTriggerExit(id);
 	}
 
-	public event Action<string, Sprite, Color> onItemPickUp;
-	public void ItemPickUp(string id, Sprite sprite, Color color)
+	public event Action<GameObject,string, Sprite, Color> onItemPickUp;
+	public void ItemPickUp(GameObject item, string id, Sprite sprite, Color color)
     {
 		if (onItemPickUp != null)
-			onItemPickUp(id, sprite, color);
+			onItemPickUp(item, id, sprite, color);
     }
 
 	public event Action<string> onItemInteract;

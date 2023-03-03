@@ -28,8 +28,9 @@ public class ItemController : MonoBehaviour
         {
             if (canPickUp)
             {
-                GameEventSys.current.ItemPickUp(id, sr.sprite, sr.color);
-                Destroy(this.gameObject);
+                GameEventSys.current.ItemPickUp(this.gameObject, id, sr.sprite, sr.color);
+                GameEventSys.current.ItemTriggerExit(id);
+                this.gameObject.SetActive(false);
             }
             else
             {
@@ -42,9 +43,10 @@ public class ItemController : MonoBehaviour
     {
         id = this.name;
         sr = this.GetComponent<SpriteRenderer>();
-
-        GameEventSys.current.onItemTriggerEnter += OnHighlightItem;
-        GameEventSys.current.onItemTriggerExit += OnUnHighlightItem;
+    }
+    private void OnEnable()
+    {
+        StartCoroutine(DelayedOnEnable());
     }
 
     private void OnDisable()
@@ -79,12 +81,21 @@ public class ItemController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // Debug.Log("trigger entered");
         GameEventSys.current.ItemTriggerEnter(id);
     }
 
     private void OnTriggerExit(Collider other)
     {
+        // Debug.Log("trigger exited");
         GameEventSys.current.ItemTriggerExit(id);
     }
 
+    IEnumerator DelayedOnEnable()
+    {
+        yield return new WaitForSeconds(0.2f);
+        GameEventSys.current.onItemTriggerEnter += OnHighlightItem;
+        GameEventSys.current.onItemTriggerExit += OnUnHighlightItem;
+        StopCoroutine(DelayedOnEnable());
+    }
 }
