@@ -15,12 +15,18 @@ public class HeldItem : MonoBehaviour
         rend = this.GetComponent<SpriteRenderer>();
     }
 
-    private void SetActiveItem()
+    public void SetActiveItem()
     {
         if (inventory.GetActiveItem() != null)
         {
             heldItem = inventory.GetActiveItem();
             rend.sprite = heldItem.itemSprite;
+            rend.color = heldItem.color;
+        }
+        else
+        {
+            heldItem = null;
+            rend.sprite = null;
         }
     }
 
@@ -29,6 +35,11 @@ public class HeldItem : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Tab))
         {
             inventory.CycleActiveItem();
+            SetActiveItem();
+        }
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            inventory.DropActiveItem(false); //false means that the item is not destroyed upon dropping
             SetActiveItem();
         }
     }

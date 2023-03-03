@@ -11,8 +11,13 @@ public class PlayerMovement : MonoBehaviour
     // Private Variables =============
     PlayerControls inputControls;
     Vector3 dir;
+    Vector3 rot;
 
     Rigidbody rb;
+    SphereCollider groundCol;
+    //Transform pivot;
+    int groundLayer = 1 << 3;
+    // bool isGrounded = true;
 
     private void Awake()
     {
@@ -45,6 +50,8 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         rb = this.GetComponent<Rigidbody>();
+        groundCol = this.GetComponent<SphereCollider>();
+        //pivot = this.transform.parent;
     }
     private void FixedUpdate()
     {
@@ -66,5 +73,32 @@ public class PlayerMovement : MonoBehaviour
         //transform.Translate(movement, Space.World);
 
         rb.AddForce(movement * speed);
+
+        rot = Camera.main.transform.position-transform.position;
+        rot.y = 0;
+        transform.rotation = Quaternion.LookRotation(rot);
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if(col.gameObject.layer == 3) //If player ground collider leaves contact with ground layer
+        {
+            Collider[] cols = Physics.OverlapSphere( new Vector3(transform.position.x, transform.position.y-0.5f, transform.position.z), 0.6f, groundLayer); //Get ground in contact with player
+
+            if(cols.Length < 1) //If there is no ground in contact with player
+            {
+                // Debug.Log("Left the ground");
+                Ray groundCheckRay = new Ray(transform.position, Vector3.down);
+                RaycastHit groundHitInfo;
+
+                if(Physics.Raycast(groundCheckRay, out groundHitInfo, Mathf.Infinity, groundLayer))
+                {
+                    transform.position = new Vector3(transform.position.x, groundHitInfo.point.y+1f, transform.position.z); //Move player to ground
+                    // isGrounded = true;
+                }
+            }
+            
+            // isGrounded = false;
+        }
     }
 }

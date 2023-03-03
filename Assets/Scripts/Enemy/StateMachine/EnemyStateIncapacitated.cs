@@ -14,7 +14,7 @@ public class EnemyStateIncapacitated : EnemyBaseState
     ============================================*/
     public override void EnterState(EnemyStateManager enemy)
     {
-
+        // Debug.Log("Incapacitated");
     }
 
     /* Update State =============================
