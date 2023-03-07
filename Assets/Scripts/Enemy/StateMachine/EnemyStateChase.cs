@@ -31,11 +31,10 @@ public class EnemyStateChase : EnemyBaseState
         if(canSeePlayer) //if player is visible
         {
             enemy.agent.destination = enemy.target.position;
-            Debug.DrawLine(enemy.transform.position, enemy.target.position, Color.yellow);
+            // Debug.DrawLine(enemy.transform.position, enemy.target.position, Color.yellow);
             if(Physics.Linecast(enemy.transform.position, enemy.target.position, out sightHit, obstacleLayer)) //If can't see the player
             {
                 canSeePlayer = false; //then the player is hidden
-                // enemy.positionQ.Enqueue(sightHit.point);
                 lastSeenPos = enemy.NearestOnNavmesh(sightHit.point);
                 enemy.agent.destination = lastSeenPos;
             }

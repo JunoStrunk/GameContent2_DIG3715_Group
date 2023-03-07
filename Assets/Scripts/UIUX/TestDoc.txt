@@ -1,0 +1,3 @@
+[SPEAKERSPRITE=][NAME=]Upon entering the bar, you are treated to a woody, alcohol tinted scent. Chatter from customers floats through the air. Your eyes are drawn to the bar. A woman stands behind the counter, wiping it with a white rag. She is chubby and heftly built.  She seems to be a subspecies of Florite, although not one you can recognize. 
+[SPEAKERSPRITE=][NAME=]Nested behind her are shelves upon shelves of alcohol. The woman looks up and makes eye contact with you.
+[SPEAKERSPRITE=Happy][NAME=Florite Woman]Hello there, what can I get for you?

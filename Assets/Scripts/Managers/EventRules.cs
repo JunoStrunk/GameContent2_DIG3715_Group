@@ -16,28 +16,46 @@ public class EventRules : MonoBehaviour
     public int LosingBound = 3;
 
     //Private variables
-    InventoryManager inventory;
-    int foundEvidence = 0;
+    InventoryManager _inventory;
+	GameObject enemiesParent;
+	int foundEvidence = 0;
 
     void Start()
     {
-        inventory = GameObject.Find("Managers").GetComponent<InventoryManager>();
+		enemiesParent = GameObject.Find("Enemies");
+        if(enemiesParent != null)
+			enemiesParent.SetActive(false);
+
+		_inventory = this.GetComponent<InventoryManager>();
         foundEvidence = 0;
 
         GameEventSys.current.onItemInteract += OnItemInteract;
         GameEventSys.current.onFoundEvidence += FoundEvidence;
+        GameEventSys.current.onTimerEnded += EndPhaseOne;
     }
 
     private void OnDisable()
     {
         GameEventSys.current.onItemInteract -= OnItemInteract;
         GameEventSys.current.onFoundEvidence -= FoundEvidence;
+        GameEventSys.current.onTimerEnded -= EndPhaseOne;
     }
 
     private void OnDestroy()
     {
         GameEventSys.current.onItemInteract -= OnItemInteract;
         GameEventSys.current.onFoundEvidence -= FoundEvidence;
+        GameEventSys.current.onTimerEnded -= EndPhaseOne;
+    }
+
+    private void EndPhaseOne()
+    {
+        //Set enemies active
+        // Debug.Log("End of Phase One");
+        if(enemiesParent != null)
+        {
+			enemiesParent.SetActive(true);
+		}
     }
 
     private void FoundEvidence()
@@ -66,7 +84,7 @@ public class EventRules : MonoBehaviour
 
     private void TestItem()
     {
-        if (inventory.GetActiveItem() != null && inventory.GetActiveItem().itemName == "Item")
-            Debug.Log("Event Occurs!");
+        if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Item")
+            _inventory.DropActiveItem(true); //true means the item is destroyed when used.
     }
 }

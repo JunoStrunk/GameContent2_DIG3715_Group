@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Bedroom.unity.meta
+guid: 7c930dddbbaddf9408ee4df0a316a255
+========
 guid: b507e0585710ad045b653a2c27c282b8
+>>>>>>>> main:Assets/Scenes/Pause_Menu.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
