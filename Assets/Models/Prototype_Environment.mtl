@@ -1,0 +1,80 @@
+newmtl brown
+Kd 0.1803922 0.1098039 0.08235294
+d 1
+
+newmtl walls_bedroom
+Kd 0.128 0.005446808 0.005446808
+d 1
+
+newmtl window
+Kd 1 1 1
+d 0.5058824
+
+newmtl car
+Kd 0.09411766 0.1294118 0.254902
+d 1
+
+newmtl red
+Kd 0.574 0 0
+d 1
+
+newmtl bed_under
+Kd 0.5377358 0.5377358 0.5377358
+d 1
+
+newmtl white
+Kd 1 1 1
+d 1
+
+newmtl dark_brown
+Kd 0.2358491 0.07357464 0.02558741
+d 1
+
+newmtl gold
+Kd 1 0.6968296 0
+d 1
+
+newmtl shiny
+Kd 0.4811321 0.4811321 0.4811321
+d 1
+
+newmtl shirt
+Kd 0.3998648 0.06808472 0.9622642
+d 1
+
+newmtl hallway_orange
+Kd 0.3647059 0.2235294 0.1411765
+d 1
+
+newmtl woody
+Kd 0.312 0.1970526 0.1477895
+d 1
+
+newmtl green
+Kd 0.2506218 0.6792453 0.1634033
+d 1
+
+newmtl player
+Kd 0.4245283 0.2438034 0.08210216
+d 1
+
+newmtl walls
+Kd 0.277 0.07862952 0.030747
+d 1
+
+newmtl wood_downstairs
+Kd 0.6705883 0.3538246 0.04705881
+d 1
+
+newmtl shiny_black
+Kd 0 0 0
+d 1
+
+newmtl tile_floor
+Kd 1 0.6943881 0.5707547
+d 1
+
+newmtl tile_wall
+Kd 1 1 1
+d 1
+

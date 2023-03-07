@@ -83,9 +83,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if(col.gameObject.layer == 3) //If player ground collider leaves contact with ground layer
         {
-            Collider[] cols = Physics.OverlapSphere( new Vector3(transform.position.x, transform.position.y-0.5f, transform.position.z), 0.6f, groundLayer); //Get ground in contact with player
+            Collider[] cols = Physics.OverlapSphere( new Vector3(transform.position.x, transform.position.y-1f, transform.position.z), 1f, groundLayer); //Get ground in contact with player
 
-            if(cols.Length < 1) //If there is no ground in contact with player
+			Debug.Log(cols.Length < 1);
+			if(cols.Length < 1) //If there is no ground in contact with player
             {
                 // Debug.Log("Left the ground");
                 Ray groundCheckRay = new Ray(transform.position, Vector3.down);
@@ -102,3 +103,4 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 }
+
