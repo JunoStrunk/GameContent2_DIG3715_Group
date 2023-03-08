@@ -20,10 +20,22 @@ public class EventRules : MonoBehaviour
 	GameObject enemiesParent;
 	int foundEvidence = 0;
 
-    void Start()
+	Dictionary<string, ItemController> itemsInWorld = new Dictionary<string, ItemController>();
+
+	void Start()
     {
-		enemiesParent = GameObject.Find("Enemies");
-        if(enemiesParent != null)
+		GameObject itemsParent = GameObject.Find("Items");
+		for (int itemsIter = 0; itemsIter < itemsParent.transform.childCount; itemsIter++)
+        {
+			// Debug.Log(itemsIter);
+			ItemController itemChild = itemsParent.transform.GetChild(itemsIter).GetComponent<ItemController>();
+			// Debug.Log("Added " + itemChild.GetID());
+            if(itemChild != null)
+                itemsInWorld.Add(itemChild.GetID(), itemChild);
+		}
+
+        enemiesParent = GameObject.Find("Enemies");
+		if(enemiesParent != null)
 			enemiesParent.SetActive(false);
 
 		_inventory = this.GetComponent<InventoryManager>();
@@ -76,7 +88,13 @@ public class EventRules : MonoBehaviour
             case "EventItem":
                 TestItem();
                 break;
-            default:
+            case "LockedDoor":
+				LockedDoor();
+				break;
+            case "Laptop":
+				Laptop();
+				break;
+			default:
                 break;
         }
 
@@ -87,4 +105,36 @@ public class EventRules : MonoBehaviour
         if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Item")
             _inventory.DropActiveItem(true); //true means the item is destroyed when used.
     }
+
+    private void LockedDoor()
+    {
+        //if player has the key, then unlock door.
+        if(_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Key")
+        {
+			// Debug.Log("OpenDoor");
+			// itemsInWorld["LockedDoor"].gameObject.SetActive(false); //Destroy Locked Door
+			itemsInWorld["LockedDoor"].transform.GetChild(0).gameObject.SetActive(false);//Destroy Mesh
+			itemsInWorld["LockedDoor"].GetComponent<BoxCollider>().enabled = false; //Disable trigger
+			_inventory.DropActiveItem(true);
+			itemsInWorld["LockedDoor"].DeInteract();
+		}
+        else
+        {
+			itemsInWorld["LockedDoor"].GetComponent<DialogueTriggerNotItem>().ShowDialogue(itemsInWorld["LockedDoor"].GetID());
+		}
+    }
+
+    private void Laptop()
+    {
+        if(_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Key")
+        {
+
+        }
+        else
+        {
+			itemsInWorld["Laptop"].GetComponent<DialogueTriggerNotItem>().ShowDialogue(itemsInWorld["Laptop"].GetID());
+
+        }
+	}
+
 }

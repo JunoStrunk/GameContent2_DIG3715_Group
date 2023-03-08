@@ -56,10 +56,13 @@ public class DialogueManager : MonoBehaviour
     [HideInInspector]
     public DialogueTrigger currentTrigger;
 
-    private bool levelBool = false;
+	[HideInInspector]
+	public DialogueTriggerNotItem currentTriggerNotItem;
+
+	private bool levelBool = false;
     private int levelIndex;
 
-    private bool isInDialouge = false;
+    public bool isInDialouge = false;
     private bool isTyping = false;
     private bool cancelTyping = false;
 
@@ -232,10 +235,14 @@ public class DialogueManager : MonoBehaviour
         {
           //  GameObject.FindObjectOfType<GameSceneManager>().LoadScene(levelIndex);
         }
-        if (currentTrigger.singleUseDialogue)
+        if (currentTrigger != null && currentTrigger.singleUseDialogue)
         {
             currentTrigger.hasBeenUsed = true;
         }
+        if(currentTriggerNotItem != null && currentTriggerNotItem.singleUseDialogue)
+        {
+			currentTriggerNotItem.hasBeenUsed = true;
+		}
         inputStream.Clear();
     }
 }

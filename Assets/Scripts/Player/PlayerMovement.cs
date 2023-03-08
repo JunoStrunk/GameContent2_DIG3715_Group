@@ -71,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
         forwardRel.y = 0;
         rightRel.y = 0;
 
+		// Debug.Log(forwardRel);
 		anim.SetFloat("Forward", forwardRel.z);
 		anim.SetFloat("Rightward", rightRel.x);
 
@@ -96,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Collider[] cols = Physics.OverlapSphere( new Vector3(transform.position.x, transform.position.y-2f, transform.position.z), 1f, groundLayer); //Get ground in contact with player
 
-			Debug.Log(cols.Length < 1);
+			// Debug.Log(cols.Length < 1);
 			if(cols.Length < 1) //If there is no ground in contact with player
             {
                 // Debug.Log("Left the ground");
@@ -113,5 +114,10 @@ public class PlayerMovement : MonoBehaviour
             // isGrounded = false;
         }
     }
+
+    // void OnDrawGizmos()
+    // {
+	// 	Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - 2.5f, transform.position.z), 1f);
+	// }
 }
 

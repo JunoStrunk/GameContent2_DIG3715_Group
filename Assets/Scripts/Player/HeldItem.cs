@@ -6,13 +6,43 @@ public class HeldItem : MonoBehaviour
 {
     InventoryManager inventory;
     InventoryItem heldItem;
+	DialogueManager dialoguemanager;
 
-    SpriteRenderer rend;
+	SpriteRenderer rend;
+	GameObject interactButton;
 
-    private void Start()
+	private void Start()
     {
         inventory = GameObject.Find("Managers").GetComponent<InventoryManager>();
+        dialoguemanager = GameObject.Find("Managers").GetComponent<DialogueManager>();
+        
         rend = this.GetComponent<SpriteRenderer>();
+		interactButton = transform.GetChild(0).gameObject;
+
+		GameEventSys.current.onItemTriggerEnter += ShowInteractButton;
+        GameEventSys.current.onItemTriggerExit += HideInteractButton;
+	}
+
+    void OnDisable()
+    {
+        GameEventSys.current.onItemTriggerEnter -= ShowInteractButton;
+        GameEventSys.current.onItemTriggerExit -= HideInteractButton;
+    }
+
+    void OnDestroy()
+    {
+        GameEventSys.current.onItemTriggerEnter -= ShowInteractButton;
+        GameEventSys.current.onItemTriggerExit -= HideInteractButton;
+    }
+
+    private void ShowInteractButton(string id)
+    {
+		interactButton.SetActive(true);
+	}
+
+    private void HideInteractButton(string id)
+    {
+		interactButton.SetActive(false);
     }
 
     public void SetActiveItem()
@@ -41,7 +71,7 @@ public class HeldItem : MonoBehaviour
         {
 			inventory.InspectActiveItem();
 		}
-        if(inventory.GetActiveItem() != null && Input.GetKeyDown(KeyCode.E) && inventory.GetActiveItem().dialogue.inDialouge)
+        if(inventory.GetActiveItem() != null && Input.GetKeyDown(KeyCode.E) && dialoguemanager.isInDialouge)
         {
 			inventory.GetActiveItem().dialogue.AdvanceDialogue();
 		}
