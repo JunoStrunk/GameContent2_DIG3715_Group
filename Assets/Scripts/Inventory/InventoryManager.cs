@@ -105,6 +105,12 @@ public class InventoryManager : MonoBehaviour
         UpdateInventory();
     }
 
+    public void InspectActiveItem()
+    {
+        if(activeItem != null)
+            activeItem.ShowDialogue();
+	}
+
     public void UpdateInventory()
     {
         for(int invIter = 0; invIter < InventoryLimit; invIter++)

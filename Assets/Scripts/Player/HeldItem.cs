@@ -37,6 +37,14 @@ public class HeldItem : MonoBehaviour
             inventory.CycleActiveItem();
             SetActiveItem();
         }
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+			inventory.InspectActiveItem();
+		}
+        if(inventory.GetActiveItem() != null && Input.GetKeyDown(KeyCode.E) && inventory.GetActiveItem().dialogue.inDialouge)
+        {
+			inventory.GetActiveItem().dialogue.AdvanceDialogue();
+		}
         if(Input.GetKeyDown(KeyCode.Q))
         {
             inventory.DropActiveItem(false); //false means that the item is not destroyed upon dropping

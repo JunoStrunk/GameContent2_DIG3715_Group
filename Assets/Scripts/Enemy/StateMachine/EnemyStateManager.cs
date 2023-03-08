@@ -30,19 +30,28 @@ public class EnemyStateManager : MonoBehaviour
 
     //Private Variables ========================================================================
     BoxCollider sight;
+	SpriteRenderer rend;
+	Animator anim;
+	Vector3 dir;
 
-    void Start()
+	void Start()
     {
         GameEventSys.current.onPlayerHides += PlayerHidden;
 
         //Get Variables
         sight = this.GetComponent<BoxCollider>();
 
-        //Get agent
-        agent = this.GetComponent<NavMeshAgent>();
-        
-        //Get patrol points
-        Transform pathsParent = this.transform.parent.GetChild(this.transform.GetSiblingIndex()+1); //gets Paths gameobject
+		//Get SpriteRenderer from child
+		rend = transform.GetChild(0).GetComponent<SpriteRenderer>();
+
+		//Get agent
+		agent = this.GetComponent<NavMeshAgent>();
+
+		//Get Animator
+		anim = this.GetComponent<Animator>();
+
+		//Get patrol points
+		Transform pathsParent = this.transform.parent.GetChild(this.transform.GetSiblingIndex()+1); //gets Paths gameobject
         for(int childIter = 0; childIter < pathsParent.childCount; childIter++) //Loop through paths children
         {
             patrolPoints.Add(pathsParent.GetChild(childIter)); //Add patrol points (Children) to list
@@ -65,7 +74,14 @@ public class EnemyStateManager : MonoBehaviour
 
     void Update()
     {
-        currentState.UpdateState(this); //Make specific enemy update state each frame
+		// dir = Vector3.Project(agent.desiredVelocity.normalized, transform.right);
+		dir = agent.desiredVelocity.normalized;
+		if(dir.x > 0)
+			rend.flipX = true;
+        else
+			rend.flipX = false;
+
+		currentState.UpdateState(this); //Make specific enemy update state each frame
         // if(positionQ.Count > 0)
         // {
         //     Debug.Log(positionQ.Peek());

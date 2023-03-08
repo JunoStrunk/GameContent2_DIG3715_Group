@@ -17,12 +17,13 @@ public class DialogueTrigger : MonoBehaviour
     public bool singleUseDialogue = false;
     [HideInInspector]
     public bool hasBeenUsed = false;
-    bool inArea = false;
+	// bool inArea = false;
+	public bool inDialouge = false;
 
 
-    // public bool useCollision; // unused for now
+	// public bool useCollision; // unused for now
 
-    private void Start()
+	private void Start()
     {
         manager = FindObjectOfType<DialogueManager>();
     }
@@ -30,7 +31,17 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Update()
     {
-        if (!hasBeenUsed && inArea && Input.GetKeyDown(KeyCode.E) && nextTime < Time.timeSinceLevelLoad)
+        // if (!hasBeenUsed && inDialouge && Input.GetKeyDown(KeyCode.E) && nextTime < Time.timeSinceLevelLoad)
+        // {
+        //     //Debug.Log("Advance");
+        //     nextTime = Time.timeSinceLevelLoad + waitTime;
+        //     manager.AdvanceDialogue();
+        // }
+    }
+
+    public void AdvanceDialogue()
+    {
+        if (!hasBeenUsed && inDialouge && Input.GetKeyDown(KeyCode.E) && nextTime < Time.timeSinceLevelLoad)
         {
             //Debug.Log("Advance");
             nextTime = Time.timeSinceLevelLoad + waitTime;
@@ -85,29 +96,36 @@ public class DialogueTrigger : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void ShowDialogue()
     {
-        if (other.gameObject.tag == "Player" && !hasBeenUsed)
-        {
-            manager.currentTrigger = this;
-            TriggerDialogue();
-            //Debug.Log("Collision");
-        }
-    }
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            inArea = true;
-        }
-    }
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            manager.EndDialogue();
-        }
-        inArea = false;
+		inDialouge = true;
+		manager.currentTrigger = this;
+		TriggerDialogue();
+	}
 
-    }
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.gameObject.tag == "Player" && !hasBeenUsed)
+    //     {
+    //         manager.currentTrigger = this;
+    //         TriggerDialogue();
+    //         //Debug.Log("Collision");
+    //     }
+    // }
+    // private void OnTriggerStay(Collider other)
+    // {
+    //     if (other.gameObject.tag == "Player")
+    //     {
+    //         inArea = true;
+    //     }
+    // }
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if (other.gameObject.tag == "Player")
+    //     {
+    //         manager.EndDialogue();
+    //     }
+    //     inArea = false;
+
+    // }
 }
