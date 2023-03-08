@@ -7,14 +7,16 @@ public class PlayerMovement : MonoBehaviour
 {
     // Public Variables ==============
     public float speed = 0f;
+	public bool disabled = false;
 
-    // Private Variables =============
-    PlayerControls inputControls;
+	// Private Variables =============
+	PlayerControls inputControls;
     Vector3 dir;
     Vector3 rot;
 
     Rigidbody rb;
-    SphereCollider groundCol;
+	Animator anim;
+	SphereCollider groundCol;
     //Transform pivot;
     int groundLayer = 1 << 3;
     // bool isGrounded = true;
@@ -45,12 +47,13 @@ public class PlayerMovement : MonoBehaviour
     private void Move(InputAction.CallbackContext context)
     {
         dir = context.ReadValue<Vector3>();
-    }
+	}
 
     private void Start()
     {
         rb = this.GetComponent<Rigidbody>();
-        groundCol = this.GetComponent<SphereCollider>();
+		anim = this.GetComponent<Animator>();
+		groundCol = this.GetComponent<SphereCollider>();
         //pivot = this.transform.parent;
     }
     private void FixedUpdate()
@@ -68,11 +71,19 @@ public class PlayerMovement : MonoBehaviour
         forwardRel.y = 0;
         rightRel.y = 0;
 
-        Vector3 movement = forwardRel + rightRel;
+		anim.SetFloat("Forward", forwardRel.z);
+		anim.SetFloat("Rightward", rightRel.x);
 
-        //transform.Translate(movement, Space.World);
+		Vector3 movement = forwardRel + rightRel;
+		if(movement != Vector3.zero)
+			anim.SetBool("Moving", true);
+        else
+			anim.SetBool("Moving", false);
+        
+		//transform.Translate(movement, Space.World);
 
-        rb.AddForce(movement * speed);
+		if(!disabled)
+            rb.AddForce(movement * speed);
 
         rot = Camera.main.transform.position-transform.position;
         rot.y = 0;
@@ -83,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(col.gameObject.layer == 3) //If player ground collider leaves contact with ground layer
         {
-            Collider[] cols = Physics.OverlapSphere( new Vector3(transform.position.x, transform.position.y-1f, transform.position.z), 1f, groundLayer); //Get ground in contact with player
+            Collider[] cols = Physics.OverlapSphere( new Vector3(transform.position.x, transform.position.y-2f, transform.position.z), 1f, groundLayer); //Get ground in contact with player
 
 			Debug.Log(cols.Length < 1);
 			if(cols.Length < 1) //If there is no ground in contact with player
@@ -94,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
 
                 if(Physics.Raycast(groundCheckRay, out groundHitInfo, Mathf.Infinity, groundLayer))
                 {
-                    transform.position = new Vector3(transform.position.x, groundHitInfo.point.y+1f, transform.position.z); //Move player to ground
+                    transform.position = new Vector3(transform.position.x, groundHitInfo.point.y+2f, transform.position.z); //Move player to ground
                     // isGrounded = true;
                 }
             }

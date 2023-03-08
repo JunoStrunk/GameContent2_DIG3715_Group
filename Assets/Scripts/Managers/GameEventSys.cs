@@ -94,6 +94,13 @@ public class GameEventSys : MonoBehaviour
 			onItemInteract(id);
     }
 
+	public event Action<string> onItemInspect;
+	public void ItemInspect(string id)
+    {
+		if (onItemInspect != null)
+			onItemInspect(id);
+    }
+
 	public event Action<string> onItemDrop;
 	public void ItemDrop(string id)
     {

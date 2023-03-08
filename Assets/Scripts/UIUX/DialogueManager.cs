@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using TMPro;
 
 /********************
  * DIALOGUE MANAGER *
@@ -24,9 +25,9 @@ public class DialogueManager : MonoBehaviour
 
 
     [Tooltip("Your text body")]
-    public Text TextBox; // the text body
+    public TextMeshProUGUI TextBox; // the text body
     [Tooltip("the text body of the name you want to display")]
-    public Text NameText; // the text body of the name you want to display
+    public TextMeshProUGUI NameText; // the text body of the name you want to display
     [Tooltip("Image where the speaker images will appear")]
     public Image speaker; //Image where the speaker images will appear
     [Tooltip("This is the little indicator that the next text can be shown (add a floater to it for added effect)")]
@@ -62,14 +63,14 @@ public class DialogueManager : MonoBehaviour
     private bool isTyping = false;
     private bool cancelTyping = false;
 
-    [Header("Dialogue Image")]
-    [Tooltip("Invisible/Placeholder sprite for when no one is talking")]
-    public Sprite invisSprite;
+    // [Header("Dialogue Image")]
+    // [Tooltip("Invisible/Placeholder sprite for when no one is talking")]
+    // public Sprite invisSprite;
 
-    [Tooltip("SpeakerLibrary Object goes in here to access your entire list of speakers")]
-    public SpeakerLibrary speakerLibrary;
-    [HideInInspector]
-    public List<string> speakerSpriteNames;
+    // [Tooltip("SpeakerLibrary Object goes in here to access your entire list of speakers")]
+    // public SpeakerLibrary speakerLibrary;
+    // [HideInInspector]
+    // public List<string> speakerSpriteNames;
 
 
 
@@ -79,28 +80,28 @@ public class DialogueManager : MonoBehaviour
     private void Start()
     {
 
-        foreach (SpeakerLibrary.SpriteInfo info in speakerLibrary.speakerLibrary)
-        {
-            speakerSpriteNames.Add(info.name);
-        }
-        speaker.sprite = invisSprite;
+        // foreach (SpeakerLibrary.SpriteInfo info in speakerLibrary.speakerLibrary)
+        // {
+        //     speakerSpriteNames.Add(info.name);
+        // }
+        // speaker.sprite = invisSprite;
     }
 
     private void FreezePlayer()
     {
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-      //  playerMovement.disabled = true;
+        playerMovement.disabled = true;
     }
 
     private void UnFreezePlayer()
     {
-     //   playerMovement.disabled = false;
+        playerMovement.disabled = false;
     }
 
     public void StartDialogue(Queue<string> dialogue)
     {
         isInDialouge = true;
-        speaker.sprite = invisSprite; //Clear the speaker
+        // speaker.sprite = invisSprite; //Clear the speaker
         DialogueUI.SetActive(true);
         continueImage.SetActive(false);
         if (freezePlayerOnDialogue)
@@ -123,7 +124,7 @@ public class DialogueManager : MonoBehaviour
     private void PrintDialogue()
     {
         if (inputStream.Peek().Contains("EndQueue")) // special phrase to stop dialogue
-        { 
+        {
             // Clear Queue
             if (!isTyping)
             {
@@ -135,37 +136,37 @@ public class DialogueManager : MonoBehaviour
                 cancelTyping = true;
             }
         }
-        else if (inputStream.Peek().Contains("[NAME=")) //Set the name of the speaker
-        {
-            string name = inputStream.Peek();
-            name = inputStream.Dequeue().Substring(name.IndexOf('=') + 1, name.IndexOf(']') - (name.IndexOf('=') + 1));
-            NameText.text = name;
-            PrintDialogue(); // print the rest of this line
-        }
-        else if (inputStream.Peek().Contains("[LEVEL=")) //On dialogue finish, go to following level
-        {
-            string part = inputStream.Peek();
-            string level = inputStream.Dequeue().Substring(part.IndexOf('=') + 1, part.IndexOf(']') - (part.IndexOf('=') + 1));
-            int levelIndex = Convert.ToInt32(level); //Convert string to integer
-            levelBool = true;
-            PrintDialogue(); // print the rest of this line
-        }
-        else if (inputStream.Peek().Contains("[SPEAKERSPRITE="))//The sprite of the speaker if you have it
-        {
-            string part = inputStream.Peek();
-            string spriteName = inputStream.Dequeue().Substring(part.IndexOf('=') + 1, part.IndexOf(']') - (part.IndexOf('=') + 1));
-            if (spriteName != "")
-            {
-                speaker.sprite = speakerLibrary.speakerLibrary[speakerSpriteNames.IndexOf(spriteName)].sprite; //sets the speaker sprite to corresponding sprite
-            }
-            else
-            {
-                speaker.sprite = invisSprite;
-            }
-            PrintDialogue(); // print the rest of this line
+        // else if (inputStream.Peek().Contains("[NAME=")) //Set the name of the speaker
+        // {
+        //     string name = inputStream.Peek();
+        //     name = inputStream.Dequeue().Substring(name.IndexOf('=') + 1, name.IndexOf(']') - (name.IndexOf('=') + 1));
+        //     NameText.text = name;
+        //     PrintDialogue(); // print the rest of this line
+        // }
+        // else if (inputStream.Peek().Contains("[LEVEL=")) //On dialogue finish, go to following level
+        // {
+        //     string part = inputStream.Peek();
+        //     string level = inputStream.Dequeue().Substring(part.IndexOf('=') + 1, part.IndexOf(']') - (part.IndexOf('=') + 1));
+        //     int levelIndex = Convert.ToInt32(level); //Convert string to integer
+        //     levelBool = true;
+        //     PrintDialogue(); // print the rest of this line
+        // }
+        // else if (inputStream.Peek().Contains("[SPEAKERSPRITE="))//The sprite of the speaker if you have it
+        // {
+        //     string part = inputStream.Peek();
+        //     // string spriteName = inputStream.Dequeue().Substring(part.IndexOf('=') + 1, part.IndexOf(']') - (part.IndexOf('=') + 1));
+        //     // if (spriteName != "")
+        //     // {
+        //     //     // speaker.sprite = speakerLibrary.speakerLibrary[speakerSpriteNames.IndexOf(spriteName)].sprite; //sets the speaker sprite to corresponding sprite
+        //     // }
+        //     // else
+        //     // {
+        //     //     // speaker.sprite = invisSprite;
+        //     // }
+        //     PrintDialogue(); // print the rest of this line
 
 
-        }
+        // }
         else
         {
             if (isScrollingText)//This deals with all the scrolling text
@@ -215,7 +216,7 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogue()
     {
         TextBox.text = "";
-        NameText.text = "";
+        // NameText.text = "";
         inputStream.Clear();
         DialogueUI.SetActive(false);
 
