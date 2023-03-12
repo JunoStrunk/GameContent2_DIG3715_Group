@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 public class GeneralSceneManager : MonoBehaviour
 {
     //public static SwapScenes Instance;
+    public Animator animator;
+    private string levelToLoad;
+    public GameObject blackscreen;
     void Start()
     {
         GameEventSys.current.onGameWon += GameWon;
@@ -36,18 +39,26 @@ public class GeneralSceneManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void LoadScenes(int sceneIndex)
-    {
-        SceneManager.LoadScene(sceneIndex);
-    }
-    public void LoadWhilePaused(int sceneIndex)
+    public void LoadName(string sceneName)
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(sceneIndex);
+        levelToLoad = sceneName;
+        blackscreen.SetActive(true);
+        animator.SetTrigger("FadeOut");
     }
+    public void FadeChangeScene()
+    {
+        SceneManager.LoadScene(levelToLoad);
+    }
+    public void FadeQuit()
+    {
+        Application.Quit();
+        print("quit");
+    }
+
     public void QuitGame()
     {
-        Debug.Log("Quiting game... ");
-        Application.Quit();
+        blackscreen.SetActive(true);
+        animator.SetTrigger("FadeQuit");
     }
 }
