@@ -39,7 +39,7 @@ public class ItemController : MonoBehaviour
         }
     }
 
-    private void Start() //Important to listen only on start or else there will be a null reference for singleton
+    private void Awake() //Important to listen only on start or else there will be a null reference for singleton
     {
         id = this.name;
         sr = this.GetComponent<SpriteRenderer>();
@@ -61,11 +61,17 @@ public class ItemController : MonoBehaviour
         GameEventSys.current.onItemTriggerExit -= OnUnHighlightItem;
     }
 
-    private void OnHighlightItem(string id)
+	public string GetID()
+    {
+		return id;
+	}
+
+	private void OnHighlightItem(string id)
     {
         if (id == this.id)
         {
-            highlight.color = Color.white;
+            if(highlight != null)
+                highlight.color = Color.white;
             selected = true;
         }
     }
@@ -74,7 +80,8 @@ public class ItemController : MonoBehaviour
     {
         if (id == this.id)
         {
-            highlight.color = sr.color;
+            if(highlight != null)
+                highlight.color = sr.color;
             selected = false;
         }
     }
@@ -89,6 +96,13 @@ public class ItemController : MonoBehaviour
     {
         // Debug.Log("trigger exited");
         GameEventSys.current.ItemTriggerExit(id);
+    }
+
+    public void DeInteract()
+    {
+        //EndDialogue
+        GameEventSys.current.ItemTriggerExit(id);
+
     }
 
     IEnumerator DelayedOnEnable()
