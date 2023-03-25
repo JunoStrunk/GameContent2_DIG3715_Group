@@ -94,6 +94,9 @@ public class EventRules : MonoBehaviour
             case "Laptop":
 				Laptop();
 				break;
+            case "PaperShredder":
+				PaperShredder();
+				break;
 			default:
                 break;
         }
@@ -126,15 +129,13 @@ public class EventRules : MonoBehaviour
 
     private void Laptop()
     {
-        if(_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Key")
-        {
-
-        }
-        else
-        {
-			itemsInWorld["Laptop"].GetComponent<DialogueTriggerNotItem>().ShowDialogue(itemsInWorld["Laptop"].GetID());
-
-        }
+		itemsInWorld["Laptop"].GetComponent<DialogueTriggerNotItem>().ShowDialogue(itemsInWorld["Laptop"].GetID());
 	}
+
+    private void PaperShredder()
+    {
+        if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Scissors")
+            _inventory.DropActiveItem(true); //true means the item is destroyed when used.
+    }
 
 }
