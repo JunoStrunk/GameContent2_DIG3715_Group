@@ -46,6 +46,7 @@ public class InventoryManager : MonoBehaviour
         GameEventSys.current.onItemPickUp -= AddItem;
     }
 
+
     private void SetActiveItem(int index)
     {
         //Debug.Log("Index: " + index);
