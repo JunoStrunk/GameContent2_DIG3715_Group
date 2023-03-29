@@ -29,7 +29,7 @@ public class InventoryManager : MonoBehaviour
         for(int invSetupIter = 0; invSetupIter < InventoryLimit; invSetupIter++)
         {
             GameObject newSlot = Instantiate(InventorySlot, transform.position, transform.rotation);
-            newSlot.transform.SetParent(inventoryLayout.transform);
+            newSlot.transform.SetParent(inventoryLayout.transform, false);
             Image newItemSlot = newSlot.transform.GetChild(0).GetComponent<Image>(); //Child will always be index 0, second child will be highlight.
             inventorySlots.Add(newItemSlot);
         }
