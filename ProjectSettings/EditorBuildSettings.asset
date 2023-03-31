@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MidTerm/MidTerm_MainMenu.unity
+    path: Assets/Scenes/MidTerm/Term_MainMenu.unity
     guid: 7134332222f534c4c9bdcaf452bd1f48
   - enabled: 1
     path: Assets/Scenes/MidTerm/MidTerm_Final.unity
