@@ -18,6 +18,7 @@ public class EventRules : MonoBehaviour
 	//Private variables
 	InventoryManager _inventory;
 	GameObject enemiesParent;
+	Transform _playerPosition;
 	int foundEvidence = 0;
 
 	bool doorOpen = false;
@@ -26,6 +27,7 @@ public class EventRules : MonoBehaviour
 
 	void Start()
 	{
+		_playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
 		GameObject itemsParent = GameObject.Find("Items");
 		for (int itemsIter = 0; itemsIter < itemsParent.transform.childCount; itemsIter++)
 		{
@@ -34,6 +36,10 @@ public class EventRules : MonoBehaviour
 			// Debug.Log("Added " + itemChild.GetID());
 			if (itemChild != null)
 				itemsInWorld.Add(itemChild.GetID(), itemChild);
+
+			//Head and legs setactive to false
+			if (itemChild.GetID() == "MB_Head" || itemChild.GetID() == "MB_Legs")
+				itemChild.gameObject.SetActive(false);
 		}
 
 		enemiesParent = GameObject.Find("Enemies");
@@ -90,6 +96,9 @@ public class EventRules : MonoBehaviour
 			case "EventItem":
 				TestItem();
 				break;
+			case "MoneyBags":
+				CutMBHalf();
+				break;
 			case "LockedDoor":
 				LockedDoor();
 				break;
@@ -109,6 +118,28 @@ public class EventRules : MonoBehaviour
 	{
 		if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Item")
 			_inventory.DropActiveItem(true); //true means the item is destroyed when used.
+	}
+
+	private void CutMBHalf()
+	{
+		if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Scissors")
+		{
+			itemsInWorld["MB_Head"].gameObject.SetActive(true);
+			itemsInWorld["MB_Legs"].gameObject.SetActive(true);
+			itemsInWorld["MoneyBags"].gameObject.SetActive(false);
+			Ray groundCheckRay = new Ray(_playerPosition.position, Vector3.down);
+			RaycastHit groundHitInfo;
+
+			if (Physics.Raycast(groundCheckRay, out groundHitInfo, Mathf.Infinity, 1 << 3)) //1 << 3 ground layermask
+			{
+				itemsInWorld["MB_Head"].transform.position = new Vector3(_playerPosition.position.x, groundHitInfo.point.y + .5f, _playerPosition.position.z);
+				itemsInWorld["MB_Legs"].transform.position = new Vector3(_playerPosition.position.x + 1f, groundHitInfo.point.y + .5f, _playerPosition.position.z);
+			}
+		}
+		else
+		{
+			itemsInWorld["MoneyBags"].PickUpItemControl();
+		}
 	}
 
 	private void LockedDoor()

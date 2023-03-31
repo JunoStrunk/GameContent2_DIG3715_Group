@@ -30,9 +30,7 @@ public class ItemController : MonoBehaviour
 		{
 			if (canPickUp)
 			{
-				GameEventSys.current.ItemPickUp(this.gameObject, id, sr.sprite, sr.color);
-				GameEventSys.current.ItemTriggerExit(id);
-				this.gameObject.SetActive(false);
+				PickUpItemControl();
 			}
 			else
 			{
@@ -53,6 +51,12 @@ public class ItemController : MonoBehaviour
 					GameEventSys.current.ItemInteract(id);
 			}
 		}
+	}
+	public void PickUpItemControl()
+	{
+		GameEventSys.current.ItemPickUp(this.gameObject, id, sr.sprite, sr.color);
+		GameEventSys.current.ItemTriggerExit(id);
+		// this.gameObject.SetActive(false);
 	}
 
 	private void Awake() //Important to listen only on start or else there will be a null reference for singleton
@@ -80,6 +84,16 @@ public class ItemController : MonoBehaviour
 	public string GetID()
 	{
 		return id;
+	}
+
+	public Sprite GetSprite()
+	{
+		return sr.sprite;
+	}
+
+	public Color GetColor()
+	{
+		return sr.color;
 	}
 
 	private void OnHighlightItem(string id)
@@ -120,6 +134,7 @@ public class ItemController : MonoBehaviour
 		GameEventSys.current.ItemTriggerExit(id);
 
 	}
+
 
 	IEnumerator DelayedOnEnable()
 	{
