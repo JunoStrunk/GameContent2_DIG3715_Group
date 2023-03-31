@@ -22,23 +22,6 @@ public class ItemController : MonoBehaviour
     SpriteRenderer sr;
     bool selected = false;
 
-    private void Update()
-    {
-        if(selected && Input.GetKeyDown(KeyCode.E))
-        {
-            if (canPickUp)
-            {
-                GameEventSys.current.ItemPickUp(this.gameObject, id, sr.sprite, sr.color);
-                GameEventSys.current.ItemTriggerExit(id);
-                this.gameObject.SetActive(false);
-            }
-            else
-            {
-                GameEventSys.current.ItemInteract(id);
-            }
-        }
-    }
-
     private void Awake() //Important to listen only on start or else there will be a null reference for singleton
     {
         id = this.name;
@@ -48,6 +31,40 @@ public class ItemController : MonoBehaviour
     {
         StartCoroutine(DelayedOnEnable());
     }
+	private void Update()
+	{
+		if (selected && Input.GetKeyDown(KeyCode.E))
+		{
+			if (canPickUp)
+			{
+				PickUpItemControl();
+			}
+			else
+			{
+				if (isHidingSpot)
+				{
+					if (inHidingSpot)
+					{
+						GameEventSys.current.PlayerHides(false);
+						inHidingSpot = false;
+					}
+					else
+					{
+						GameEventSys.current.PlayerHides(true);
+						inHidingSpot = true;
+					}
+				}
+				else
+					GameEventSys.current.ItemInteract(id);
+			}
+		}
+	}
+	public void PickUpItemControl()
+	{
+		GameEventSys.current.ItemPickUp(this.gameObject, id, sr.sprite, sr.color);
+		GameEventSys.current.ItemTriggerExit(id);
+		// this.gameObject.SetActive(false);
+	}
 
     private void OnDisable()
     {
@@ -64,6 +81,16 @@ public class ItemController : MonoBehaviour
 	public string GetID()
     {
 		return id;
+	}
+
+	public Sprite GetSprite()
+	{
+		return sr.sprite;
+	}
+
+	public Color GetColor()
+	{
+		return sr.color;
 	}
 
 	private void OnHighlightItem(string id)
@@ -105,11 +132,12 @@ public class ItemController : MonoBehaviour
 
     }
 
-    IEnumerator DelayedOnEnable()
-    {
-        yield return new WaitForSeconds(0.2f);
-        GameEventSys.current.onItemTriggerEnter += OnHighlightItem;
-        GameEventSys.current.onItemTriggerExit += OnUnHighlightItem;
-        StopCoroutine(DelayedOnEnable());
-    }
+
+	IEnumerator DelayedOnEnable()
+	{
+		yield return new WaitForSeconds(0.2f);
+		GameEventSys.current.onItemTriggerEnter += OnHighlightItem;
+		GameEventSys.current.onItemTriggerExit += OnUnHighlightItem;
+		StopCoroutine(DelayedOnEnable());
+	}
 }

@@ -18,20 +18,26 @@ public class EventRules : MonoBehaviour
     //Private variables
     InventoryManager _inventory;
 	GameObject enemiesParent;
+	Transform _playerPosition;
 	int foundEvidence = 0;
 
 	Dictionary<string, ItemController> itemsInWorld = new Dictionary<string, ItemController>();
 
 	void Start()
-    {
+	{
+		_playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
 		GameObject itemsParent = GameObject.Find("Items");
 		for (int itemsIter = 0; itemsIter < itemsParent.transform.childCount; itemsIter++)
         {
 			// Debug.Log(itemsIter);
 			ItemController itemChild = itemsParent.transform.GetChild(itemsIter).GetComponent<ItemController>();
 			// Debug.Log("Added " + itemChild.GetID());
-            if(itemChild != null)
-                itemsInWorld.Add(itemChild.GetID(), itemChild);
+			if (itemChild != null)
+				itemsInWorld.Add(itemChild.GetID(), itemChild);
+
+			//Head and legs setactive to false
+			if (itemChild.GetID() == "MB_Head" || itemChild.GetID() == "MB_Legs")
+				itemChild.gameObject.SetActive(false);
 		}
 
         enemiesParent = GameObject.Find("Enemies");
@@ -81,14 +87,17 @@ public class EventRules : MonoBehaviour
         }
     }
 
-    private void OnItemInteract(string id)
-    {
-        switch (id)
-        {
-            case "EventItem":
-                TestItem();
-                break;
-            case "LockedDoor":
+	private void OnItemInteract(string id)
+	{
+		switch (id)
+		{
+			case "EventItem":
+				TestItem();
+				break;
+			case "MoneyBags":
+				CutMBHalf();
+				break;
+			case "LockedDoor":
 				LockedDoor();
 				break;
             case "Laptop":
@@ -109,11 +118,33 @@ public class EventRules : MonoBehaviour
             _inventory.DropActiveItem(true); //true means the item is destroyed when used.
     }
 
-    private void LockedDoor()
-    {
-        //if player has the key, then unlock door.
-        if(_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Key")
-        {
+	private void CutMBHalf()
+	{
+		if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Scissors")
+		{
+			itemsInWorld["MB_Head"].gameObject.SetActive(true);
+			itemsInWorld["MB_Legs"].gameObject.SetActive(true);
+			itemsInWorld["MoneyBags"].gameObject.SetActive(false);
+			Ray groundCheckRay = new Ray(_playerPosition.position, Vector3.down);
+			RaycastHit groundHitInfo;
+
+			if (Physics.Raycast(groundCheckRay, out groundHitInfo, Mathf.Infinity, 1 << 3)) //1 << 3 ground layermask
+			{
+				itemsInWorld["MB_Head"].transform.position = new Vector3(_playerPosition.position.x, groundHitInfo.point.y + .5f, _playerPosition.position.z);
+				itemsInWorld["MB_Legs"].transform.position = new Vector3(_playerPosition.position.x + 1f, groundHitInfo.point.y + .5f, _playerPosition.position.z);
+			}
+		}
+		else
+		{
+			itemsInWorld["MoneyBags"].PickUpItemControl();
+		}
+	}
+
+	private void LockedDoor()
+	{
+		//if player has the key, then unlock door.
+		if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Key")
+		{
 			// Debug.Log("OpenDoor");
 			// itemsInWorld["LockedDoor"].gameObject.SetActive(false); //Destroy Locked Door
 			itemsInWorld["LockedDoor"].transform.GetChild(0).gameObject.SetActive(false);//Destroy Mesh
