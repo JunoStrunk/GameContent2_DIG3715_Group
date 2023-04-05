@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemController : MonoBehaviour
 {
-    /* Notes ============================
+	/* Notes ============================
      * This script should be placed on any interactables.
      * It controls if the item is selected, or interacted with.
      * This script tells when to add the item to the inventory
@@ -12,25 +12,27 @@ public class ItemController : MonoBehaviour
      * 
      * Possible issue with two items being too close to each other
      ================================== */
-    // Public
-    
-    public SpriteRenderer highlight;
-    public bool canPickUp = true;
+	// Public
 
-    // Private
-    string id;
-    SpriteRenderer sr;
-    bool selected = false;
+	public SpriteRenderer highlight;
+	public bool canPickUp = true;
+	public bool isHidingSpot = false;
 
-    private void Awake() //Important to listen only on start or else there will be a null reference for singleton
-    {
-        id = this.name;
-        sr = this.GetComponent<SpriteRenderer>();
-    }
-    private void OnEnable()
-    {
-        StartCoroutine(DelayedOnEnable());
-    }
+	// Private
+	string id;
+	SpriteRenderer sr;
+	bool selected = false;
+	bool inHidingSpot = false;
+
+	private void Awake() //Important to listen only on start or else there will be a null reference for singleton
+	{
+		id = this.name;
+		sr = this.GetComponent<SpriteRenderer>();
+	}
+	private void OnEnable()
+	{
+		StartCoroutine(DelayedOnEnable());
+	}
 	private void Update()
 	{
 		if (selected && Input.GetKeyDown(KeyCode.E))
@@ -66,20 +68,20 @@ public class ItemController : MonoBehaviour
 		// this.gameObject.SetActive(false);
 	}
 
-    private void OnDisable()
-    {
-        GameEventSys.current.onItemTriggerEnter -= OnHighlightItem;
-        GameEventSys.current.onItemTriggerExit -= OnUnHighlightItem;
-    }
+	private void OnDisable()
+	{
+		GameEventSys.current.onItemTriggerEnter -= OnHighlightItem;
+		GameEventSys.current.onItemTriggerExit -= OnUnHighlightItem;
+	}
 
-    private void OnDestroy()
-    {
-        GameEventSys.current.onItemTriggerEnter -= OnHighlightItem;
-        GameEventSys.current.onItemTriggerExit -= OnUnHighlightItem;
-    }
+	private void OnDestroy()
+	{
+		GameEventSys.current.onItemTriggerEnter -= OnHighlightItem;
+		GameEventSys.current.onItemTriggerExit -= OnUnHighlightItem;
+	}
 
 	public string GetID()
-    {
+	{
 		return id;
 	}
 
@@ -94,43 +96,43 @@ public class ItemController : MonoBehaviour
 	}
 
 	private void OnHighlightItem(string id)
-    {
-        if (id == this.id)
-        {
-            if(highlight != null)
-                highlight.color = Color.white;
-            selected = true;
-        }
-    }
+	{
+		if (id == this.id)
+		{
+			if (highlight != null)
+				highlight.color = Color.white;
+			selected = true;
+		}
+	}
 
-    private void OnUnHighlightItem(string id)
-    {
-        if (id == this.id)
-        {
-            if(highlight != null)
-                highlight.color = sr.color;
-            selected = false;
-        }
-    }
+	private void OnUnHighlightItem(string id)
+	{
+		if (id == this.id)
+		{
+			if (highlight != null)
+				highlight.color = sr.color;
+			selected = false;
+		}
+	}
 
-    private void OnTriggerEnter(Collider other)
-    {
-        // Debug.Log("trigger entered");
-        GameEventSys.current.ItemTriggerEnter(id);
-    }
+	private void OnTriggerEnter(Collider other)
+	{
+		// Debug.Log("trigger entered");
+		GameEventSys.current.ItemTriggerEnter(id);
+	}
 
-    private void OnTriggerExit(Collider other)
-    {
-        // Debug.Log("trigger exited");
-        GameEventSys.current.ItemTriggerExit(id);
-    }
+	private void OnTriggerExit(Collider other)
+	{
+		// Debug.Log("trigger exited");
+		GameEventSys.current.ItemTriggerExit(id);
+	}
 
-    public void DeInteract()
-    {
-        //EndDialogue
-        GameEventSys.current.ItemTriggerExit(id);
+	public void DeInteract()
+	{
+		//EndDialogue
+		GameEventSys.current.ItemTriggerExit(id);
 
-    }
+	}
 
 
 	IEnumerator DelayedOnEnable()

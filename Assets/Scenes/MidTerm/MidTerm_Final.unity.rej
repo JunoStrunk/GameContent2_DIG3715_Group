@@ -1,7 +1,7 @@
 diff a/Assets/Scenes/MidTerm/MidTerm_Final.unity b/Assets/Scenes/MidTerm/MidTerm_Final.unity	(rejected hunks)
 @@ -1,3 +1,3 @@
  version https://git-lfs.github.com/spec/v1
--oid sha256:cc93fbe09070cff8976a3fb5063a6767817125783f4a2240498f24d1cedfd0e4
--size 1089964
-+oid sha256:87548233b4c2370ecc62beed2b619d0e82b546fc963dd784396d36009bf2143c
-+size 287
+-oid sha256:48afd7c503b965484d104ef7fcaf5bd5a362494401595d09a66b42703102c18b
+-size 1090881
++oid sha256:e0064c9c0cc363ba3ee3b8c3823eecf1ee83a2c83c2f7dceb38768ffb901ceb4
++size 277
