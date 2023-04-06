@@ -20,10 +20,12 @@ public class PlayerMovement : MonoBehaviour
 	//Transform pivot;
 	int groundLayer = 1 << 3;
 	// bool isGrounded = true;
+	float trueSpeed = 0f;
 
 	private void Awake()
 	{
 		inputControls = new PlayerControls();
+		trueSpeed = speed;
 	}
 
 	private void OnEnable()
@@ -124,6 +126,16 @@ public class PlayerMovement : MonoBehaviour
 			disabled = true;
 		else
 			disabled = false;
+	}
+
+	public void SlowSpeed()
+	{
+		speed /= 3;
+	}
+
+	public void ResetSpeed()
+	{
+		speed = trueSpeed;
 	}
 
 	IEnumerator DelayedStart()

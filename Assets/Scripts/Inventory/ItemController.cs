@@ -17,6 +17,7 @@ public class ItemController : MonoBehaviour
 	public SpriteRenderer highlight;
 	public bool canPickUp = true;
 	public bool isHidingSpot = false;
+	public bool hideOnStart = false;
 
 	// Private
 	string id;
@@ -118,13 +119,15 @@ public class ItemController : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		// Debug.Log("trigger entered");
-		GameEventSys.current.ItemTriggerEnter(id);
+		if (other.gameObject.CompareTag("Player"))
+			GameEventSys.current.ItemTriggerEnter(id);
 	}
 
 	private void OnTriggerExit(Collider other)
 	{
 		// Debug.Log("trigger exited");
-		GameEventSys.current.ItemTriggerExit(id);
+		if (other.gameObject.CompareTag("Player"))
+			GameEventSys.current.ItemTriggerExit(id);
 	}
 
 	public void DeInteract()

@@ -22,9 +22,10 @@ public class EventRules : MonoBehaviour
 	int foundEvidence = 0;
 
 	//flags
-	bool doorOpen = false;
+	bool knowsMotherName = false;
 
 	Dictionary<string, ItemController> itemsInWorld = new Dictionary<string, ItemController>();
+	Dictionary<string, GameObject> notItems = new Dictionary<string, GameObject>();
 
 	void Start()
 	{
@@ -36,11 +37,15 @@ public class EventRules : MonoBehaviour
 			ItemController itemChild = itemsParent.transform.GetChild(itemsIter).GetComponent<ItemController>();
 			// Debug.Log("Added " + itemChild.GetID());
 			if (itemChild != null)
+			{
 				itemsInWorld.Add(itemChild.GetID(), itemChild);
-
-			//Head and legs setactive to false
-			if (itemChild.GetID() == "MB_Head" || itemChild.GetID() == "MB_Legs")
-				itemChild.gameObject.SetActive(false);
+				if (itemChild.hideOnStart)
+					itemChild.gameObject.SetActive(false);
+			}
+			else
+			{
+				notItems.Add(itemsParent.transform.GetChild(itemsIter).gameObject.name, itemsParent.transform.GetChild(itemsIter).gameObject);
+			}
 		}
 
 		enemiesParent = GameObject.Find("Enemies");
@@ -109,6 +114,12 @@ public class EventRules : MonoBehaviour
 			case "PaperShredder":
 				PaperShredder();
 				break;
+			case "Mat&Sheets":
+				CleanSheets();
+				break;
+			case "Painting_Mother":
+				FindKey();
+				break;
 			default:
 				break;
 		}
@@ -154,7 +165,7 @@ public class EventRules : MonoBehaviour
 			itemsInWorld["LockedDoor"].GetComponent<BoxCollider>().enabled = false; //Disable trigger
 			_inventory.DropActiveItem(true);
 			itemsInWorld["LockedDoor"].DeInteract();
-			doorOpen = true;
+			StartCoroutine(DelayLawSpawn());
 		}
 		else
 		{
@@ -171,6 +182,49 @@ public class EventRules : MonoBehaviour
 	{
 		if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Scissors")
 			_inventory.DropActiveItem(true); //true means the item is destroyed when used.
+		else if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "MoneyBags")
+			_inventory.DropActiveItem(true); //true means the item is destroyed when used.
+		else if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "MB_Head")
+			_inventory.DropActiveItem(true); //true means the item is destroyed when used.
+		else if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "MB_Legs")
+			_inventory.DropActiveItem(true); //true means the item is destroyed when used.
+		else
+			itemsInWorld["PaperShredder"].GetComponent<DialogueTriggerNotItem>().ShowDialogue(itemsInWorld["PaperShredder"].GetID());
+
+	}
+
+	private void CleanSheets()
+	{
+		if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "WhiteOut")
+		{
+			notItems["Matress"].GetComponent<ChangeSheets>().CleanSheets();
+			notItems["Sheets"].GetComponent<ChangeSheets>().CleanSheets();
+			itemsInWorld["Mat&Sheets"].gameObject.SetActive(false);
+		}
+		else
+		{
+			itemsInWorld["Mat&Sheets"].GetComponent<DialogueTriggerNotItem>().ShowDialogue(itemsInWorld["Mat&Sheets"].GetID());
+
+		}
+	}
+
+	private void FindKey()
+	{
+		if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "PaintingNote")
+		{
+			_inventory.AddItem(itemsInWorld["Key"].gameObject);
+		}
+		else
+		{
+			itemsInWorld["Painting_Mother"].GetComponent<DialogueTriggerNotItem>().ShowDialogue(itemsInWorld["Painting_Mother"].GetID());
+		}
+
+	}
+
+	IEnumerator DelayLawSpawn()
+	{
+		yield return new WaitForSeconds(5f);
+		GameEventSys.current.TimerEnded();
 	}
 
 }

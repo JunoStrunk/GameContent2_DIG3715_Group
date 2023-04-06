@@ -17,13 +17,15 @@ public class InventoryManager : MonoBehaviour
 	HorizontalLayoutGroup inventoryLayout;
 	InventoryItem activeItem = null;
 	int activeItemIndex = 0;
-	Transform _playerPosition;
+	GameObject _player;
+	PlayerMovement _playerScript;
 	HeldItem _heldItem;
 
 	private void Start() //Important to listen only on start or else there will be a null reference for singleton
 	{
 		_heldItem = GameObject.Find("HeldItem").GetComponent<HeldItem>();
-		_playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
+		_player = GameObject.FindGameObjectWithTag("Player");
+		_playerScript = _player.GetComponent<PlayerMovement>();
 		inventoryLayout = GameObject.Find("Slots").GetComponent<HorizontalLayoutGroup>();
 
 		for (int invSetupIter = 0; invSetupIter < InventoryLimit; invSetupIter++)
@@ -85,17 +87,17 @@ public class InventoryManager : MonoBehaviour
 		if (!destroys)
 		{
 			//Drop the item on the ground again
-			// GameObject droppedItem = Instantiate(activeItem.item, _playerPosition.position, _playerPosition.rotation);
+			// GameObject droppedItem = Instantiate(activeItem.item, _player.position, _player.rotation);
 			activeItem.item.SetActive(true);
 
 
 			//Make sure the player is on the ground
-			Ray groundCheckRay = new Ray(_playerPosition.position, Vector3.down);
+			Ray groundCheckRay = new Ray(_player.transform.position, Vector3.down);
 			RaycastHit groundHitInfo;
 
 			if (Physics.Raycast(groundCheckRay, out groundHitInfo, Mathf.Infinity, 1 << 3)) //1 << 3 ground layermask
 			{
-				activeItem.item.transform.position = new Vector3(_playerPosition.position.x, groundHitInfo.point.y + .5f, _playerPosition.position.z);
+				activeItem.item.transform.position = new Vector3(_player.transform.position.x, groundHitInfo.point.y + .5f, _player.transform.position.z);
 			}
 
 			GameEventSys.current.ItemTriggerEnter(activeItem.itemName);
@@ -135,6 +137,12 @@ public class InventoryManager : MonoBehaviour
 		}
 	}
 
+	public void AddItem(GameObject item)
+	{
+		ItemController newItem = item.GetComponent<ItemController>();
+		AddItem(item, newItem.GetID(), newItem.GetSprite(), newItem.GetColor());
+	}
+
 	public void AddItem(GameObject item, string id, Sprite sprite, Color color)
 	{
 		if (!(InventoryList.Count >= InventoryLimit))
@@ -145,6 +153,8 @@ public class InventoryManager : MonoBehaviour
 			newItem.SetValues(item, id, sprite, color);
 			InventoryList.Add(newItem);
 			// Debug.Log("Added item: " + newItem.itemName + ", Inventory Count: " + InventoryList.Count);
+
+			CheckForSpecialsADD(id);
 
 			//Cycle through current inventory to find next slot
 			for (int invSlotCheck = 0; invSlotCheck < InventoryLimit; invSlotCheck++)
@@ -168,6 +178,54 @@ public class InventoryManager : MonoBehaviour
 
 	public bool RemoveItem(InventoryItem itemToRemove)
 	{
+		CheckForSpecialsREMOVE(itemToRemove.itemName);
 		return InventoryList.Remove(itemToRemove);
+	}
+
+	public bool SearchInventory(string name)
+	{
+		for (int searchIter = 0; searchIter < InventoryList.Count; searchIter++)
+		{
+			if (InventoryList[searchIter].itemName.Equals(name))
+				return true;
+		}
+		return false;
+	}
+
+	private void CheckForSpecialsADD(string name)
+	{
+		switch (name)
+		{
+			case "MoneyBags":
+				_playerScript.SlowSpeed();
+				break;
+			case "MB_Head":
+				if (SearchInventory("MB_Legs"))
+					_playerScript.SlowSpeed();
+				break;
+			case "MB_Legs":
+				if (SearchInventory("MB_Head"))
+					_playerScript.SlowSpeed();
+				break;
+			default:
+				break;
+		}
+	}
+	private void CheckForSpecialsREMOVE(string name)
+	{
+		switch (name)
+		{
+			case "MoneyBags":
+				_playerScript.ResetSpeed();
+				break;
+			case "MB_Head":
+				_playerScript.ResetSpeed();
+				break;
+			case "MB_Legs":
+				_playerScript.ResetSpeed();
+				break;
+			default:
+				break;
+		}
 	}
 }

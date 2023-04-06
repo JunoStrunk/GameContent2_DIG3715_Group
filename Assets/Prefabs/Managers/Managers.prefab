@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4226219863844059936}
   - component: {fileID: 647245339}
   - component: {fileID: 211225510}
+  - component: {fileID: 855855537}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -88,6 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fcb3623c14597141a291afa7c3797ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  blackscreen: {fileID: 0}
 --- !u!114 &211225510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,4 +105,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TimerText: {fileID: 0}
   TimerUI: {fileID: 0}
-  timeLeft: 60
+  timeLeft: 5
+--- !u!114 &855855537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4226219863844059937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c05a4b5d7e5614245a45ece29348d590, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DialogueUI: {fileID: 0}
+  TextBox: {fileID: 0}
+  NameText: {fileID: 0}
+  speaker: {fileID: 0}
+  continueImage: {fileID: 0}
+  continueImage2: {fileID: 0}
+  isScrollingText: 1
+  typeSpeed: 0.01
+  currentTrigger: {fileID: 0}
+  currentTriggerNotItem: {fileID: 0}
+  isInDialouge: 0
+  freezePlayerOnDialogue: 1
