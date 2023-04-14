@@ -1,6 +1,2 @@
-Jeez! There are some incriminating emails on here...
-I can't delete them without a password.
-[INVALID PASSWORD]
-[INVALID PASSWORD]
-Hint: Mother's first name.
-My mother's first name... I can't remember anything... maybe there is a clue around.
+There may be some incriminating emails on here...
+I better login to delete them.

@@ -5,60 +5,71 @@ using UnityEngine.SceneManagement;
 
 public class GeneralSceneManager : MonoBehaviour
 {
-    //public static SwapScenes Instance;
-    public Animator animator;
-    private string levelToLoad;
-    public GameObject blackscreen;
-    void Start()
-    {
-        GameEventSys.current.onGameWon += GameWon;
-        GameEventSys.current.onGameLost += GameLost;
-    }
+	//public static SwapScenes Instance;
+	public Animator animator;
+	private string levelToLoad;
+	public GameObject blackscreen;
 
-    void OnDisable() 
-    {
-        GameEventSys.current.onGameWon -= GameWon;
-        GameEventSys.current.onGameLost -= GameLost;
-    }
+	private int evidenceFound = 0;
 
-    void OnDestroy()
-    {
-        GameEventSys.current.onGameWon -= GameWon;
-        GameEventSys.current.onGameLost -= GameLost;
-    }
+	void Start()
+	{
+		GameEventSys.current.onGameWon += GameWon;
+		GameEventSys.current.onGameLost += GameLost;
+		GameEventSys.current.onFoundEvidence += IncreaseEvidence;
+	}
 
-    public void GameWon()
-    {
-        //Whatever happens when the game is won
-        Debug.Log("GameWon");
-    }
+	void OnDisable()
+	{
+		GameEventSys.current.onGameWon -= GameWon;
+		GameEventSys.current.onGameLost -= GameLost;
+		GameEventSys.current.onFoundEvidence -= IncreaseEvidence;
+	}
 
-    public void GameLost()
-    {
-        //Whatever happens when the game is lost
-        SceneManager.LoadScene("MainMenu");
-    }
+	void OnDestroy()
+	{
+		GameEventSys.current.onGameWon -= GameWon;
+		GameEventSys.current.onGameLost -= GameLost;
+		GameEventSys.current.onFoundEvidence -= IncreaseEvidence;
+	}
 
-    public void LoadName(string sceneName)
-    {
-        Time.timeScale = 1f;
-        levelToLoad = sceneName;
-        blackscreen.SetActive(true);
-        animator.SetTrigger("FadeOut");
-    }
-    public void FadeChangeScene()
-    {
-        SceneManager.LoadScene(levelToLoad);
-    }
-    public void FadeQuit()
-    {
-        Application.Quit();
-        print("quit");
-    }
+	public void GameWon()
+	{
+		//Whatever happens when the game is won
+		Debug.Log("GameWon");
+	}
 
-    public void QuitGame()
-    {
-        blackscreen.SetActive(true);
-        animator.SetTrigger("FadeQuit");
-    }
+	public void GameLost()
+	{
+		//Whatever happens when the game is lost
+		Debug.Log("GameLost");
+	}
+
+	public void IncreaseEvidence()
+	{
+		evidenceFound++;
+	}
+
+	public void LoadName(string sceneName)
+	{
+		Time.timeScale = 1f;
+		levelToLoad = sceneName;
+		blackscreen.SetActive(true);
+		animator.SetTrigger("FadeOut");
+	}
+	public void FadeChangeScene()
+	{
+		SceneManager.LoadScene(levelToLoad);
+	}
+	public void FadeQuit()
+	{
+		Application.Quit();
+		print("quit");
+	}
+
+	public void QuitGame()
+	{
+		blackscreen.SetActive(true);
+		animator.SetTrigger("FadeQuit");
+	}
 }

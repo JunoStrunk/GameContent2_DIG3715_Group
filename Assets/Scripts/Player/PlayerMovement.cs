@@ -22,6 +22,8 @@ public class PlayerMovement : MonoBehaviour
 	// bool isGrounded = true;
 	float trueSpeed = 0f;
 
+	public bool faceCamera = true;
+
 	private void Awake()
 	{
 		inputControls = new PlayerControls();
@@ -90,9 +92,12 @@ public class PlayerMovement : MonoBehaviour
 		if (!disabled)
 			rb.AddForce(movement * speed);
 
-		rot = Camera.main.transform.position - transform.position;
-		rot.y = 0;
-		transform.rotation = Quaternion.LookRotation(rot);
+		if (faceCamera)
+		{
+			rot = Camera.main.transform.position - transform.position;
+			rot.y = 0;
+			transform.rotation = Quaternion.LookRotation(rot);
+		}
 	}
 
 	void OnTriggerExit(Collider col)

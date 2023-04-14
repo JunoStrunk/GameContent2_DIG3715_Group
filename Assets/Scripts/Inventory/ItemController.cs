@@ -100,15 +100,15 @@ public class ItemController : MonoBehaviour
 	{
 		if (id == this.id)
 		{
-			if (highlight != null)
-				highlight.color = Color.white;
+			// if (highlight != null)
+			// 	highlight.color = Color.white;
 			selected = true;
 		}
 	}
 
 	private void OnUnHighlightItem(string id)
 	{
-		if (id == this.id)
+		if (id == this.id && !inHidingSpot)
 		{
 			if (highlight != null)
 				highlight.color = sr.color;

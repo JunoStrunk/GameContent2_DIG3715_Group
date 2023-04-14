@@ -13,7 +13,7 @@ public class DialogueTriggerNotItem : MonoBehaviour
 	public bool singleUseDialogue = false;
 	[HideInInspector]
 	public bool hasBeenUsed = false;
-	bool inArea = false;
+	// bool inArea = false;
 	public bool inDialouge = false;
 	// public bool willDisappearLater = false;
 
@@ -52,11 +52,16 @@ public class DialogueTriggerNotItem : MonoBehaviour
 		// }
 	}
 
+	public void UnFreezePlayer()
+	{
+		manager.UnFreezePlayer();
+	}
+
 	public void AdvanceDialogue()
 	{
 		if (!hasBeenUsed && Input.GetKeyDown(KeyCode.E) && nextTime < Time.timeSinceLevelLoad)
 		{
-			//Debug.Log("Advance");
+			Debug.Log("Advance");
 			nextTime = Time.timeSinceLevelLoad + waitTime;
 			manager.AdvanceDialogue();
 		}
@@ -111,6 +116,7 @@ public class DialogueTriggerNotItem : MonoBehaviour
 
 	public void ShowDialogue(string id)
 	{
+		// Debug.Log(inDialouge);
 		inDialouge = true;
 		manager.currentTriggerNotItem = this;
 		TriggerDialogue();

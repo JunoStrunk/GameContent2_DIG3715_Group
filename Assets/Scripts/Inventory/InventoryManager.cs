@@ -59,8 +59,8 @@ public class InventoryManager : MonoBehaviour
 			activeItem = InventoryList[index];
 		activeItemIndex = index;
 
-		if (activeItem != null)
-			inventorySlots[activeItemIndex].color = Color.white; //highlihgt
+		// if (activeItem != null)
+		// 	inventorySlots[activeItemIndex].color = Color.white; //highlihgt
 
 		_heldItem.SetActiveItem();
 	}

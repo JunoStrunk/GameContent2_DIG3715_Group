@@ -21,8 +21,7 @@ public class EventRules : MonoBehaviour
 	Transform _playerPosition;
 	int foundEvidence = 0;
 
-	//flags
-	bool knowsMotherName = false;
+	public GameObject _computerScreen;
 
 	Dictionary<string, ItemController> itemsInWorld = new Dictionary<string, ItemController>();
 	Dictionary<string, GameObject> notItems = new Dictionary<string, GameObject>();
@@ -30,6 +29,8 @@ public class EventRules : MonoBehaviour
 	void Start()
 	{
 		_playerPosition = GameObject.FindGameObjectWithTag("Player").transform;
+		if (_computerScreen != null)
+			_computerScreen.SetActive(false);
 		GameObject itemsParent = GameObject.Find("Items");
 		for (int itemsIter = 0; itemsIter < itemsParent.transform.childCount; itemsIter++)
 		{
@@ -72,6 +73,16 @@ public class EventRules : MonoBehaviour
 		GameEventSys.current.onItemInteract -= OnItemInteract;
 		GameEventSys.current.onFoundEvidence -= FoundEvidence;
 		GameEventSys.current.onTimerEnded -= EndPhaseOne;
+	}
+
+	private void FreezePlayer()
+	{
+		_playerPosition.GetComponent<PlayerMovement>().disabled = true;
+	}
+
+	private void UnFreezePlayer()
+	{
+		_playerPosition.GetComponent<PlayerMovement>().disabled = false;
 	}
 
 	private void EndPhaseOne()
@@ -117,8 +128,14 @@ public class EventRules : MonoBehaviour
 			case "Mat&Sheets":
 				CleanSheets();
 				break;
-			case "Painting_Mother":
+			case "Painting_Genevieve":
 				FindKey();
+				break;
+			case "Painting_Paul":
+			case "Painting_Mother":
+			case "Painting_Patrick":
+			case "Painting_Annalise":
+				PaintingDialogue(id);
 				break;
 			default:
 				break;
@@ -128,7 +145,7 @@ public class EventRules : MonoBehaviour
 
 	private void TestItem()
 	{
-		if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Item")
+		if (_inventory.GetActiveItem() != null)
 			_inventory.DropActiveItem(true); //true means the item is destroyed when used.
 	}
 
@@ -175,7 +192,20 @@ public class EventRules : MonoBehaviour
 
 	private void Laptop()
 	{
-		itemsInWorld["Laptop"].GetComponent<DialogueTriggerNotItem>().ShowDialogue(itemsInWorld["Laptop"].GetID());
+		DialogueTriggerNotItem laptopDialogue = itemsInWorld["Laptop"].GetComponent<DialogueTriggerNotItem>();
+		if (!laptopDialogue.hasBeenUsed)
+			laptopDialogue.ShowDialogue(itemsInWorld["Laptop"].GetID());
+		else
+		{
+			FreezePlayer();
+			_computerScreen.SetActive(true);
+		}
+	}
+
+	public void LaptopClose()
+	{
+		UnFreezePlayer();
+		_computerScreen.SetActive(false);
 	}
 
 	private void PaperShredder()
@@ -213,12 +243,18 @@ public class EventRules : MonoBehaviour
 		if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "PaintingNote")
 		{
 			_inventory.AddItem(itemsInWorld["Key"].gameObject);
+			_inventory.DropActiveItem(true); //true means the item is destroyed when used.
 		}
 		else
 		{
-			itemsInWorld["Painting_Mother"].GetComponent<DialogueTriggerNotItem>().ShowDialogue(itemsInWorld["Painting_Mother"].GetID());
+			itemsInWorld["Painting_Genevieve"].GetComponent<DialogueTriggerNotItem>().ShowDialogue(itemsInWorld["Painting_Genevieve"].GetID());
 		}
 
+	}
+
+	private void PaintingDialogue(string id)
+	{
+		itemsInWorld[id].GetComponent<DialogueTriggerNotItem>().ShowDialogue(itemsInWorld[id].GetID());
 	}
 
 	IEnumerator DelayLawSpawn()
