@@ -8,6 +8,9 @@ public class PlayerMovement : MonoBehaviour
 	// Public Variables ==============
 	public float speed = 0f;
 	public bool disabled = false;
+	//Mark snippit//
+	public static bool isMoving;
+	//END//
 
 	// Private Variables =============
 	PlayerControls inputControls;
@@ -84,12 +87,24 @@ public class PlayerMovement : MonoBehaviour
 		Vector3 movement = forwardRel + rightRel;
 		if (movement != Vector3.zero)
 			anim.SetBool("Moving", true);
+
 		else
 			anim.SetBool("Moving", false);
 
-		//transform.Translate(movement, Space.World);
+		//Mark snippit//
+		if (movement != Vector3.zero)
+        {
+			isMoving = true;
+        }
+		else
+        {
+			isMoving = false;
+        }
+		//END//
 
-		if (!disabled)
+			//transform.Translate(movement, Space.World);
+
+			if (!disabled)
 			rb.AddForce(movement * speed);
 
 		if (faceCamera)

@@ -8,6 +8,7 @@ public class PauseScript : MonoBehaviour
     public static bool GameIsPaused = false;
     public GameObject pauseMenuUI;
     public GameObject controlsUI;
+    public GameObject inventory;
     public static bool bannerExit = false;
     public static bool controlsExit = false;
 
@@ -35,7 +36,8 @@ public class PauseScript : MonoBehaviour
     {
         pauseMenuUI.SetActive(true);        
         Time.timeScale = 0f;
-        GameIsPaused = true;
+        GameIsPaused = true; 
+        inventory.SetActive(false);
     }
 
     public void openControls()
@@ -54,6 +56,7 @@ public class PauseScript : MonoBehaviour
         yield return new WaitForSecondsRealtime(.5f);
         Time.timeScale = 1f;
         pauseMenuUI.SetActive(false);
+        inventory.SetActive(true);
         GameIsPaused = false;
         bannerExit = false;
     }
