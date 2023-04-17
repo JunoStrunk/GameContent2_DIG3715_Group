@@ -13,6 +13,9 @@ public class EnemyStateChase : EnemyBaseState
 	Vector3 lastSeenPos;
 	int obstacleLayer = 1 << 6;
 	bool canSeePlayer = true; //canSeePlayer must be separate from isPlayerHidden, because then chase state will never end
+	//Mark Snippit//
+	public static bool seePlayerAudio = false;
+	//END//
 
 	/* Enter State =============================
     *   - When the state is entered, what happens?
@@ -21,6 +24,9 @@ public class EnemyStateChase : EnemyBaseState
 	{
 		// Debug.Log("Chasing");
 		canSeePlayer = true;
+		//Mark Snippit//
+		seePlayerAudio = true;
+		//END//
 	}
 
 	/* Update State =============================
@@ -35,6 +41,9 @@ public class EnemyStateChase : EnemyBaseState
 			if (Physics.Linecast(enemy.transform.position, enemy.target.position, out sightHit, obstacleLayer)) //If can't see the player
 			{
 				canSeePlayer = false; //then the player is hidden
+				//Mark Snippit//
+				seePlayerAudio = false;
+				//END//
 				lastSeenPos = enemy.NearestOnNavmesh(sightHit.point);
 				enemy.agent.destination = lastSeenPos;
 			}
