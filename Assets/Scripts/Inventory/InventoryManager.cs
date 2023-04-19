@@ -83,8 +83,9 @@ public class InventoryManager : MonoBehaviour
 	public void DropActiveItem(bool destroys)
 	{
 		RemoveItem(activeItem);
-		//Drop item audio
+		//Drop item audio // DEBUG PLS JUNO
 		GameEventSys.current.ItemDropSound();
+		/////////////////////////////////////
 
 		if (!destroys)
 		{
