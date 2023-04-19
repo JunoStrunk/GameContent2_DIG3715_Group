@@ -87,6 +87,20 @@ public class GameEventSys : MonoBehaviour
 			onItemTriggerExit(id);
 	}
 
+	public event Action onItemPickUpSound;
+	public void ItemPickUpSound()
+	{
+		if (onItemPickUpSound != null)
+			onItemPickUpSound();
+	}
+
+	public event Action onItemDropSound;
+	public void ItemDropSound()
+	{
+		if (onItemDropSound != null)
+			onItemDropSound();
+	}
+
 	public event Action<GameObject, string, Sprite, Color> onItemPickUp;
 	public void ItemPickUp(GameObject item, string id, Sprite sprite, Color color)
 	{

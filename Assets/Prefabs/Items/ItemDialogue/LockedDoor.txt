@@ -1,1 +1,2 @@
-The door is locked.
+The door is locked. It looks like theres a security device attached!
+I should clean up upstairs before opening this door.

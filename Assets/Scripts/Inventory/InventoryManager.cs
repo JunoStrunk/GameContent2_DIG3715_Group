@@ -83,6 +83,8 @@ public class InventoryManager : MonoBehaviour
 	public void DropActiveItem(bool destroys)
 	{
 		RemoveItem(activeItem);
+		//Drop item audio
+		GameEventSys.current.ItemDropSound();
 
 		if (!destroys)
 		{
@@ -153,7 +155,7 @@ public class InventoryManager : MonoBehaviour
 			newItem.SetValues(item, id, sprite, color);
 			InventoryList.Add(newItem);
 			// Debug.Log("Added item: " + newItem.itemName + ", Inventory Count: " + InventoryList.Count);
-
+			GameEventSys.current.ItemPickUpSound();
 			CheckForSpecialsADD(id);
 
 			//Cycle through current inventory to find next slot

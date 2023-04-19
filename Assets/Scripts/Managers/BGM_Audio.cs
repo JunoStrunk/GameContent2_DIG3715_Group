@@ -17,6 +17,14 @@ public class BGM_Audio : MonoBehaviour
         audioSource.Play();
         GameEventSys.current.onTimerEnded += bgmAudio;  
     }
+    private void OnDisable()
+    {
+        GameEventSys.current.onTimerEnded -= bgmAudio;
+    }
+    private void OnDestroy()
+    {
+        GameEventSys.current.onTimerEnded -= bgmAudio;
+    }
     public void bgmAudio()
     {
         print("test");
