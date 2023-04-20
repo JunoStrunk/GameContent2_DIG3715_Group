@@ -20,6 +20,8 @@ public class EventRules : MonoBehaviour
 	GameObject enemiesParent;
 	Transform _playerPosition;
 	int foundEvidence = 0;
+	int hiddenEvidence = 0;
+	int WinBound = 4;
 
 	public GameObject _computerScreen;
 
@@ -106,6 +108,16 @@ public class EventRules : MonoBehaviour
 		}
 	}
 
+	private void HidEvidence()
+	{
+		hiddenEvidence++;
+
+		if (hiddenEvidence == WinBound)
+		{
+			GameEventSys.current.GameWon();
+		}
+	}
+
 	private void OnItemInteract(string id)
 	{
 		switch (id)
@@ -153,6 +165,7 @@ public class EventRules : MonoBehaviour
 	{
 		if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Scissors")
 		{
+			WinBound++;
 			itemsInWorld["MB_Head"].gameObject.SetActive(true);
 			itemsInWorld["MB_Legs"].gameObject.SetActive(true);
 			itemsInWorld["MoneyBags"].gameObject.SetActive(false);
@@ -211,13 +224,27 @@ public class EventRules : MonoBehaviour
 	private void PaperShredder()
 	{
 		if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Scissors")
+		{
 			_inventory.DropActiveItem(true); //true means the item is destroyed when used.
+			HidEvidence();
+		}
 		else if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "MoneyBags")
+		{
 			_inventory.DropActiveItem(true); //true means the item is destroyed when used.
+			HidEvidence();
+
+		}
 		else if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "MB_Head")
+		{
 			_inventory.DropActiveItem(true); //true means the item is destroyed when used.
+			HidEvidence();
+		}
 		else if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "MB_Legs")
+		{
 			_inventory.DropActiveItem(true); //true means the item is destroyed when used.
+			HidEvidence();
+
+		}
 		else
 			itemsInWorld["PaperShredder"].GetComponent<DialogueTriggerNotItem>().ShowDialogue(itemsInWorld["PaperShredder"].GetID());
 

@@ -54,8 +54,11 @@ public class GeneralSceneManager : MonoBehaviour
 	{
 		Time.timeScale = 1f;
 		levelToLoad = sceneName;
-		blackscreen.SetActive(true);
-		animator.SetTrigger("FadeOut");
+		if (blackscreen != null)
+			blackscreen.SetActive(true);
+
+		if (animator != null)
+			animator.SetTrigger("FadeOut");
 	}
 	public void FadeChangeScene()
 	{

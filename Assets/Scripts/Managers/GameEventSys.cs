@@ -8,7 +8,7 @@ public class GameEventSys : MonoBehaviour
 	//Create singleton for event system :)
 	public static GameEventSys current;
 
-	private void OnEnable()
+	void Awake()
 	{
 		current = this;
 	}

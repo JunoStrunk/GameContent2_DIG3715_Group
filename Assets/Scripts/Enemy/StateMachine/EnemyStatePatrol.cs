@@ -32,7 +32,7 @@ public class EnemyStatePatrol : EnemyBaseState
 		//Move to target point
 		enemy.agent.destination = targetPoint.position;
 
-		Debug.Log(Vector3.Distance(enemy.agent.transform.position, targetPoint.position));
+		// Debug.Log(Vector3.Distance(enemy.agent.transform.position, targetPoint.position));
 		//Once at at target point...
 		if (Vector3.Distance(enemy.agent.transform.position, targetPoint.position) - 1f < 1)
 		{

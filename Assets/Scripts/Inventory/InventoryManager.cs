@@ -82,33 +82,36 @@ public class InventoryManager : MonoBehaviour
 
 	public void DropActiveItem(bool destroys)
 	{
-		RemoveItem(activeItem);
-		//Drop item audio // DEBUG PLS JUNO
-		GameEventSys.current.ItemDropSound();
-		/////////////////////////////////////
-
-		if (!destroys)
+		if (activeItem != null)
 		{
-			//Drop the item on the ground again
-			// GameObject droppedItem = Instantiate(activeItem.item, _player.position, _player.rotation);
-			activeItem.item.SetActive(true);
+			RemoveItem(activeItem);
+			//Drop item audio // DEBUG PLS JUNO
+			GameEventSys.current.ItemDropSound();
+			/////////////////////////////////////
 
-
-			//Make sure the player is on the ground
-			Ray groundCheckRay = new Ray(_player.transform.position, Vector3.down);
-			RaycastHit groundHitInfo;
-
-			if (Physics.Raycast(groundCheckRay, out groundHitInfo, Mathf.Infinity, 1 << 3)) //1 << 3 ground layermask
+			if (!destroys)
 			{
-				activeItem.item.transform.position = new Vector3(_player.transform.position.x, groundHitInfo.point.y + .5f, _player.transform.position.z);
+				//Drop the item on the ground again
+				// GameObject droppedItem = Instantiate(activeItem.item, _player.position, _player.rotation);
+				activeItem.item.SetActive(true);
+
+
+				//Make sure the player is on the ground
+				Ray groundCheckRay = new Ray(_player.transform.position, Vector3.down);
+				RaycastHit groundHitInfo;
+
+				if (Physics.Raycast(groundCheckRay, out groundHitInfo, Mathf.Infinity, 1 << 3)) //1 << 3 ground layermask
+				{
+					activeItem.item.transform.position = new Vector3(_player.transform.position.x, groundHitInfo.point.y + .5f, _player.transform.position.z);
+				}
+
+				GameEventSys.current.ItemTriggerExit(activeItem.itemName);
 			}
 
-			GameEventSys.current.ItemTriggerEnter(activeItem.itemName);
+			activeItem = null;
+			CycleActiveItem();
+			UpdateInventory();
 		}
-
-		activeItem = null;
-		CycleActiveItem();
-		UpdateInventory();
 	}
 
 	public void InspectActiveItem()
@@ -181,7 +184,8 @@ public class InventoryManager : MonoBehaviour
 
 	public bool RemoveItem(InventoryItem itemToRemove)
 	{
-		CheckForSpecialsREMOVE(itemToRemove.itemName);
+		if (itemToRemove != null)
+			CheckForSpecialsREMOVE(itemToRemove.itemName);
 		return InventoryList.Remove(itemToRemove);
 	}
 

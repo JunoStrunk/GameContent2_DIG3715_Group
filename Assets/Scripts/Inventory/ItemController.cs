@@ -32,7 +32,8 @@ public class ItemController : MonoBehaviour
 	}
 	private void OnEnable()
 	{
-		StartCoroutine(DelayedOnEnable());
+		GameEventSys.current.onItemTriggerEnter += OnHighlightItem;
+		GameEventSys.current.onItemTriggerExit += OnUnHighlightItem;
 	}
 	private void Update()
 	{
@@ -135,14 +136,5 @@ public class ItemController : MonoBehaviour
 		//EndDialogue
 		GameEventSys.current.ItemTriggerExit(id);
 
-	}
-
-
-	IEnumerator DelayedOnEnable()
-	{
-		yield return new WaitForSeconds(0.2f);
-		GameEventSys.current.onItemTriggerEnter += OnHighlightItem;
-		GameEventSys.current.onItemTriggerExit += OnUnHighlightItem;
-		StopCoroutine(DelayedOnEnable());
 	}
 }
