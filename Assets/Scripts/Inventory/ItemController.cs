@@ -30,11 +30,25 @@ public class ItemController : MonoBehaviour
 		id = this.name;
 		sr = this.GetComponent<SpriteRenderer>();
 	}
-	private void OnEnable()
+
+	void Start()
 	{
 		GameEventSys.current.onItemTriggerEnter += OnHighlightItem;
 		GameEventSys.current.onItemTriggerExit += OnUnHighlightItem;
+
 	}
+
+	private void OnEnable()
+	{
+		if (GameEventSys.current != null)
+		{
+			GameEventSys.current.onItemTriggerEnter += OnHighlightItem;
+			GameEventSys.current.onItemTriggerExit += OnUnHighlightItem;
+		}
+		else
+			StartCoroutine(DelayedEnable());
+	}
+
 	private void Update()
 	{
 		if (selected && Input.GetKeyDown(KeyCode.E))
@@ -136,5 +150,13 @@ public class ItemController : MonoBehaviour
 		//EndDialogue
 		GameEventSys.current.ItemTriggerExit(id);
 
+	}
+
+	IEnumerator DelayedEnable()
+	{
+		yield return new WaitForSeconds(0.2f);
+		GameEventSys.current.onItemTriggerEnter += OnHighlightItem;
+		GameEventSys.current.onItemTriggerExit += OnUnHighlightItem;
+		StopCoroutine(DelayedEnable());
 	}
 }

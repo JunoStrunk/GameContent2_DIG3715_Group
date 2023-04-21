@@ -114,7 +114,11 @@ public class EventRules : MonoBehaviour
 
 		if (hiddenEvidence == WinBound)
 		{
-			GameEventSys.current.GameWon();
+			GameEventSys.current.GameWon(0);
+		}
+		else
+		{
+			GameEventSys.current.GameWon(1);
 		}
 	}
 
@@ -166,6 +170,7 @@ public class EventRules : MonoBehaviour
 		if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "Scissors")
 		{
 			WinBound++;
+			LosingBound++;
 			itemsInWorld["MB_Head"].gameObject.SetActive(true);
 			itemsInWorld["MB_Legs"].gameObject.SetActive(true);
 			itemsInWorld["MoneyBags"].gameObject.SetActive(false);

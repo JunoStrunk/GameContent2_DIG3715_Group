@@ -14,35 +14,53 @@ public class GeneralSceneManager : MonoBehaviour
 
 	void Start()
 	{
-		GameEventSys.current.onGameWon += GameWon;
-		GameEventSys.current.onGameLost += GameLost;
-		GameEventSys.current.onFoundEvidence += IncreaseEvidence;
+		if (GameEventSys.current != null)
+		{
+			GameEventSys.current.onGameWon += GameWon;
+			GameEventSys.current.onGameLost += GameLost;
+			GameEventSys.current.onFoundEvidence += IncreaseEvidence;
+		}
 	}
 
 	void OnDisable()
 	{
-		GameEventSys.current.onGameWon -= GameWon;
-		GameEventSys.current.onGameLost -= GameLost;
-		GameEventSys.current.onFoundEvidence -= IncreaseEvidence;
+		if (GameEventSys.current != null)
+		{
+			GameEventSys.current.onGameWon -= GameWon;
+			GameEventSys.current.onGameLost -= GameLost;
+			GameEventSys.current.onFoundEvidence -= IncreaseEvidence;
+
+		}
 	}
 
 	void OnDestroy()
 	{
-		GameEventSys.current.onGameWon -= GameWon;
-		GameEventSys.current.onGameLost -= GameLost;
-		GameEventSys.current.onFoundEvidence -= IncreaseEvidence;
+		if (GameEventSys.current != null)
+		{
+			GameEventSys.current.onGameWon -= GameWon;
+			GameEventSys.current.onGameLost -= GameLost;
+			GameEventSys.current.onFoundEvidence -= IncreaseEvidence;
+
+		}
 	}
 
-	public void GameWon()
+	public void GameWon(int EndingVar)
 	{
-		//Whatever happens when the game is won
-		Debug.Log("GameWon");
+		// //Whatever happens when the game is won
+		// Debug.Log("GameWon");
+		PlayerPrefs.SetInt("EndingVariable", EndingVar);
+		LoadName("Ending");
+		FadeChangeScene();
 	}
 
 	public void GameLost()
 	{
-		//Whatever happens when the game is lost
-		Debug.Log("GameLost");
+		// //Whatever happens when the game is lost
+		// Debug.Log("GameLost");
+
+		PlayerPrefs.SetInt("EndingVariable", 2);
+		LoadName("Ending");
+		FadeChangeScene();
 	}
 
 	public void IncreaseEvidence()

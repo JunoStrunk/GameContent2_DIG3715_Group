@@ -40,11 +40,11 @@ public class GameEventSys : MonoBehaviour
 			onTimerEnded();
 	}
 
-	public event Action onGameWon;
-	public void GameWon()
+	public event Action<int> onGameWon;
+	public void GameWon(int EndingVar)
 	{
 		if (onGameWon != null)
-			onGameWon();
+			onGameWon(EndingVar);
 	}
 
 	public event Action onGameLost;
