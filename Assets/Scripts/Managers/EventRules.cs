@@ -101,22 +101,29 @@ public class EventRules : MonoBehaviour
 	{
 		foundEvidence++;
 
-		//check if number of evidence correct to stop the game
-		if (foundEvidence == LosingBound)
-		{
-			GameEventSys.current.GameLost();
-		}
+		CheckBounds();
 	}
 
-	private void HidEvidence()
+	public void HidEvidence()
 	{
 		hiddenEvidence++;
 
+		CheckBounds();
+	}
+
+	private void CheckBounds()
+	{
+		Debug.Log("Hidden: " + hiddenEvidence);
+		Debug.Log("Found: " + foundEvidence);
 		if (hiddenEvidence == WinBound)
 		{
 			GameEventSys.current.GameWon(0);
 		}
-		else
+		else if (foundEvidence == LosingBound)
+		{
+			GameEventSys.current.GameLost();
+		}
+		else if (hiddenEvidence + foundEvidence == WinBound)
 		{
 			GameEventSys.current.GameWon(1);
 		}
@@ -262,6 +269,7 @@ public class EventRules : MonoBehaviour
 			notItems["Matress"].GetComponent<ChangeSheets>().CleanSheets();
 			notItems["Sheets"].GetComponent<ChangeSheets>().CleanSheets();
 			itemsInWorld["Mat&Sheets"].gameObject.SetActive(false);
+			HidEvidence();
 		}
 		else
 		{
@@ -274,7 +282,21 @@ public class EventRules : MonoBehaviour
 	{
 		if (_inventory.GetActiveItem() != null && _inventory.GetActiveItem().itemName == "PaintingNote")
 		{
-			_inventory.AddItem(itemsInWorld["Key"].gameObject);
+			if (_inventory.isInventoryFull())
+			{
+				Ray groundCheckRay = new Ray(_playerPosition.transform.position, Vector3.down);
+				RaycastHit groundHitInfo;
+
+				if (Physics.Raycast(groundCheckRay, out groundHitInfo, Mathf.Infinity, 1 << 3)) //1 << 3 ground layermask
+				{
+					itemsInWorld["Key"].transform.position = new Vector3(_playerPosition.transform.position.x, groundHitInfo.point.y + .5f, _playerPosition.transform.position.z);
+				}
+			}
+			else
+			{
+				_inventory.AddItem(itemsInWorld["Key"].gameObject);
+			}
+
 			_inventory.DropActiveItem(true); //true means the item is destroyed when used.
 		}
 		else

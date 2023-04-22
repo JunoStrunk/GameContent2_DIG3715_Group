@@ -16,6 +16,8 @@ public class EndingControls : MonoBehaviour
 		EndingA.gameObject.SetActive(false);
 		EndingB.gameObject.SetActive(false);
 		EndingC.gameObject.SetActive(false);
+
+		SetEnding();
 	}
 
 	void SetEnding()

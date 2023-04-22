@@ -105,7 +105,7 @@ public class InventoryManager : MonoBehaviour
 					activeItem.item.transform.position = new Vector3(_player.transform.position.x, groundHitInfo.point.y + .5f, _player.transform.position.z);
 				}
 
-				GameEventSys.current.ItemTriggerExit(activeItem.itemName);
+				GameEventSys.current.ItemTriggerEnter(activeItem.itemName);
 			}
 
 			activeItem = null;
@@ -234,5 +234,13 @@ public class InventoryManager : MonoBehaviour
 			default:
 				break;
 		}
+	}
+
+	public bool isInventoryFull()
+	{
+		if (InventoryList.Count >= InventoryLimit)
+			return true;
+		else
+			return false;
 	}
 }

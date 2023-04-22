@@ -8,6 +8,8 @@ public class PasswordInput : MonoBehaviour
 	TMP_InputField passwordInput;
 	public GameObject ComputerScreen;
 	public GameObject Laptop;
+	public EventRules eventRules;
+
 
 	/// <summary>
 	/// Start is called on the frame when a script is enabled just before
@@ -15,6 +17,7 @@ public class PasswordInput : MonoBehaviour
 	/// </summary>
 	void Start()
 	{
+		eventRules = GameObject.Find("Managers").GetComponent<EventRules>();
 		passwordInput = this.GetComponent<TMP_InputField>();
 	}
 
@@ -27,6 +30,7 @@ public class PasswordInput : MonoBehaviour
 			Laptop.SetActive(false);
 			GameEventSys.current.PuzzleSolved();
 			GameEventSys.current.ItemTriggerExit("Laptop");
+			eventRules.HidEvidence();
 		}
 		else
 		{
