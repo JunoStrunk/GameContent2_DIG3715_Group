@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class LoadingZone : MonoBehaviour
 {
-	GeneralSceneManager sceneManager;
+	public GeneralSceneManager sceneManager;
 	// Start is called before the first frame update
 	void Start()
 	{
-		sceneManager = GameObject.Find("GameManager").GetComponent<GeneralSceneManager>();
+		//sceneManager = GameObject.Find("GameManager").GetComponent<GeneralSceneManager>();
 	}
 
 	void OnTriggerEnter(Collider col)
@@ -17,7 +17,7 @@ public class LoadingZone : MonoBehaviour
 		{
 			Debug.Log("Loading Scene");
 			sceneManager.LoadName("Midterm_Final");
-			sceneManager.FadeChangeScene();
+			//sceneManager.FadeChangeScene();
 		}
 	}
 
