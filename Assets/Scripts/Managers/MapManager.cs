@@ -7,6 +7,7 @@ public class MapManager : MonoBehaviour
     public GameObject mapUI;
     public GameObject floor1;
     public GameObject floor2;
+    public GameObject inventory;
     public static bool mapExit = false;
 
     public GameObject Map_closed_BTN;
@@ -71,12 +72,14 @@ public class MapManager : MonoBehaviour
             turnOn();
             Map_closed_BTN.SetActive(false);
             Map_opened_BTN.SetActive(true);
+            inventory.SetActive(false);
         }
         else if (mapOn == true)
         {
             turnOff();
             Map_closed_BTN.SetActive(true);
             Map_opened_BTN.SetActive(false);
+            inventory.SetActive(true);
         }
     }
     public void mapUp()
