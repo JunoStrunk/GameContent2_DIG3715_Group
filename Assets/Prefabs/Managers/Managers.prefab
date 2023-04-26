@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4226219863844059938}
   - component: {fileID: 4226219863844059939}
   - component: {fileID: 4226219863844059936}
-  - component: {fileID: 647245339}
   - component: {fileID: 211225510}
   - component: {fileID: 855855537}
   m_Layer: 0
@@ -78,20 +77,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LosingBound: 1
   _computerScreen: {fileID: 0}
---- !u!114 &647245339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4226219863844059937}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fcb3623c14597141a291afa7c3797ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  blackscreen: {fileID: 0}
 --- !u!114 &211225510
 MonoBehaviour:
   m_ObjectHideFlags: 0

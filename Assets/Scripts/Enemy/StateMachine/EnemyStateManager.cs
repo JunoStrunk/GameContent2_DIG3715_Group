@@ -54,7 +54,7 @@ public class EnemyStateManager : MonoBehaviour
 		Transform pathsParent = this.transform.parent.GetChild(this.transform.GetSiblingIndex() + 1); //gets Paths gameobject
 		for (int childIter = 0; childIter < pathsParent.childCount; childIter++) //Loop through paths children
 		{
-			Debug.Log("Added" + pathsParent.GetChild(childIter).name);
+			// Debug.Log("Added" + pathsParent.GetChild(childIter).name);
 			patrolPoints.Add(pathsParent.GetChild(childIter)); //Add patrol points (Children) to list
 		}
 

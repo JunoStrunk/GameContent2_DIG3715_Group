@@ -8,7 +8,7 @@ public class LoadingZone : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		sceneManager = GameObject.Find("Managers").GetComponent<GeneralSceneManager>();
+		sceneManager = GameObject.Find("GameManager").GetComponent<GeneralSceneManager>();
 	}
 
 	void OnTriggerEnter(Collider col)

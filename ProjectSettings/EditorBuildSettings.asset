@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MidTerm/MidTerm_Final.unity
     guid: f619704b31baf0f479cac6dee059c2d0
+  - enabled: 1
+    path: Assets/Scenes/Ending.unity
+    guid: 55dda7c0bcee9e14a82f8a37135bd00f
   m_configObjects: {}

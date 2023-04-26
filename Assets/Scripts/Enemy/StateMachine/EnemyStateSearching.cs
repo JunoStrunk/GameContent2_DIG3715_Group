@@ -56,7 +56,7 @@ public class EnemyStateSearching : EnemyBaseState
 			}
 			else
 			{
-				// Debug.DrawLine(enemy.transform.position, searchPostion, Color.red);
+				Debug.DrawLine(enemy.transform.position, searchPostion, Color.red);
 				if (Vector3.Distance(enemy.agent.transform.position, searchPostion) - 2f < 0.1f) //if enemy is at search spot
 				{
 					searchIter++;
